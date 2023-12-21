@@ -5,6 +5,7 @@
 #include "Engine/IShader.h"
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
+#include "Engine/EntityComponentSystem/Entity.h"
 
 #include <ctime>
 #include <math.h>
@@ -22,8 +23,9 @@ IApplication* GetApplication(IGraphics* Graphics, IInput* Input)
 	return new Game(Graphics, Input);
 }
 
-Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Rings(), Arrow(nullptr), SelectedRing(), State()
+Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Entities(), SelectedRing(), State()
 {
+	Arrow = std::make_shared<Entity>();
 }
 
 Game::~Game()
@@ -37,6 +39,7 @@ bool Game::IsValid()
 
 bool Game::Load()
 {
+	// Loading all textures
 	ITexture* InnerTexture = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds");
 	ITexture* MiddleTexture = Graphics->CreateTexture(L"Resource/Textures/MiddleRing.dds");
 	ITexture* OuterTexture = Graphics->CreateTexture(L"Resource/Textures/OuterRing.dds");
@@ -45,11 +48,38 @@ bool Game::Load()
 	IShader* MiddleShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", MiddleTexture);
 	IShader* OuterShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", OuterTexture);
 	IShader* ArrowShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", ArrowTexture);
-	Rings[static_cast<unsigned int>(RingLayer::Inner)] = Graphics->CreateBillboard(InnerShader);
-	Rings[static_cast<unsigned int>(RingLayer::Middle)] = Graphics->CreateBillboard(MiddleShader);
-	Rings[static_cast<unsigned int>(RingLayer::Outer)] = Graphics->CreateBillboard(OuterShader);
-	Arrow = Graphics->CreateBillboard(ArrowShader);
+	
+	// Loading all entities
 
+	//Rings[static_cast<unsigned int>(RingLayer::Inner)] = Graphics->CreateBillboard(InnerShader);
+	//Rings[static_cast<unsigned int>(RingLayer::Middle)] = Graphics->CreateBillboard(MiddleShader);
+	//Rings[static_cast<unsigned int>(RingLayer::Outer)] = Graphics->CreateBillboard(OuterShader);
+	//Arrow = Graphics->CreateBillboard(ArrowShader);
+
+
+	{
+		Entity tempEntity;
+		tempEntity.initEntity(EntityType::RING, 0, InnerShader, Graphics);
+		std::shared_ptr<Entity> temp = std::make_shared<Entity>(tempEntity);
+		Entities.push_back(temp);
+	}
+	{
+		Entity tempEntity;
+		tempEntity.initEntity(EntityType::RING, 1, MiddleShader, Graphics);
+		std::shared_ptr<Entity> temp = std::make_shared<Entity>(tempEntity);
+		Entities.push_back(temp);
+	}
+	{
+		Entity tempEntity;
+		tempEntity.initEntity(EntityType::RING, 2, OuterShader, Graphics);
+		std::shared_ptr<Entity> temp = std::make_shared<Entity>(tempEntity);
+		Entities.push_back(temp);
+	}
+
+	Arrow->initEntity(EntityType::ARROW, 3, ArrowShader, Graphics);
+
+
+	// Setting initial game state
 	std::srand(static_cast<unsigned int>(std::time(0)));
 
 	SelectedRing = RingLayer::Outer;
@@ -92,10 +122,10 @@ void Game::SetupEachRing()
 {
 	for (unsigned int Ring = 0; Ring < NumberOfRings; ++Ring)
 	{
-		Rings[Ring]->SetRotation(static_cast<float>(fmod(rand(), Pie)));
+		Entities.at(Ring)->getRenderable()->SetRotation(static_cast<float>(fmod(rand(), Pie)));
 	}
 
-	Arrow->SetRotation(static_cast<float>(fmod(rand(), Pie)));
+	Arrow->getRenderable()->SetRotation(static_cast<float>(fmod(rand(), Pie)));
 }
 
 void Game::UpdateRingSelection()
@@ -119,9 +149,9 @@ void Game::UpdateRingSelection()
 void Game::UpdateSelectedRingRotation()
 {
 	float delta = Input->GetValue(InputAction::RightStickXAxis) * SpinSpeed * DeltaTime;
-	float rotation = Rings[static_cast<int>(SelectedRing)]->GetTransform().Rotation;
+	float rotation = Entities.at(static_cast<int>(SelectedRing))->getRenderable()->GetTransform().Rotation;
 	float newRotation = static_cast<float>(fmod(rotation + delta, TwoPies));
-	Rings[static_cast<int>(SelectedRing)]->SetRotation(newRotation);
+	Entities.at(static_cast<int>(SelectedRing))->getRenderable()->SetRotation(newRotation);
 }
 
 void Game::UpdateRingTestSelection()
@@ -135,11 +165,11 @@ void Game::UpdateRingTestSelection()
 void Game::TestRingSolution()
 {
 	float totalRotationDifference = 0.0f;
-	float arrowRotation = Arrow->GetTransform().Rotation + TwoPies;
+	float arrowRotation = Arrow->getRenderable()->GetTransform().Rotation + TwoPies;
 
 	for (unsigned int Ring = 0; Ring < NumberOfRings; ++Ring)
 	{
-		totalRotationDifference += abs(arrowRotation - (Rings[Ring]->GetTransform().Rotation + TwoPies));
+		totalRotationDifference += abs(arrowRotation - (Entities[Ring]->getRenderable()->GetTransform().Rotation + TwoPies));
 	}
 
 	float averageRotationDifference = totalRotationDifference / NumberOfRings;

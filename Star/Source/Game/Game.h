@@ -1,12 +1,15 @@
 
 #pragma once
 
+#include <vector>
+#include <memory>
 #include "Engine/IApplication.h"
 
 class IGraphics;
 class ITexture;
 class IShader;
 class IRenderable;
+class Entity;
 
 enum RingLayer { Outer, Middle, Inner, NumRings };
 enum GameState { Setup, Playing, Test, NumModes };
@@ -32,8 +35,9 @@ private:
 	void UpdateRingTestSelection();
 	void TestRingSolution();
 
-	IRenderable* Rings[NumberOfRings];
-	IRenderable* Arrow;
+	// IRenderable* Rings[NumberOfRings];
+	std::shared_ptr<Entity> Arrow;
+	std::vector<std::shared_ptr<Entity>> Entities;
 	RingLayer SelectedRing;
 	GameState State;
 };
