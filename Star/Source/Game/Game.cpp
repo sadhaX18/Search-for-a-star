@@ -26,6 +26,11 @@ IApplication* GetApplication(IGraphics* Graphics, IInput* Input)
 Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Entities(), SelectedRing(), State()
 {
 	Arrow = std::make_shared<Entity>();
+
+	//init gameWorld
+	b2Vec2 gravity(0.0f, 10.0f);
+	gameWorld = new b2World(gravity);
+
 }
 
 Game::~Game()

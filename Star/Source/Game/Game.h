@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include "box2d/box2d.h"
 #include "Engine/IApplication.h"
 
 class IGraphics;
@@ -40,5 +41,7 @@ private:
 	std::vector<std::shared_ptr<Entity>> Entities;
 	RingLayer SelectedRing;
 	GameState State;
+
+	b2World* gameWorld;
 };
 
