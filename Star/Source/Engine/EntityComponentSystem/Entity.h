@@ -2,6 +2,7 @@
 #include<memory>
 
 class IRenderable;
+class b2Body;
 
 enum class EntityType
 {
@@ -15,8 +16,11 @@ public:
 	Entity();
 	Entity(EntityType type,int id);
 	virtual ~Entity();
+
+	virtual void syncGraphics();
 	
-	void initEntity(EntityType type, int id, IShader* shader, IGraphics* graphics);
+	void initEntity(EntityType type, int id, IShader* shader, IGraphics* graphics, 
+		std::shared_ptr<b2World> gameWorld, float x = 0.0f, float y = 0.0f);
 
 	std::shared_ptr<IRenderable> getRenderable() { return renderable; }
 
@@ -24,6 +28,6 @@ public:
 private:
 	EntityType entityType;
 	int entityID;
-	std::shared_ptr<IRenderable> renderable; // position component??
-
+	std::shared_ptr<IRenderable> renderable; // Graphics component
+	b2Body* physics; // physics component
 };

@@ -42,6 +42,6 @@ private:
 	RingLayer SelectedRing;
 	GameState State;
 
-	b2World* gameWorld;
+	std::shared_ptr<b2World> gameWorld;
 };
 

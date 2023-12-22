@@ -29,7 +29,7 @@ Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, In
 
 	//init gameWorld
 	b2Vec2 gravity(0.0f, 10.0f);
-	gameWorld = new b2World(gravity);
+	gameWorld = std::make_shared<b2World>(gravity);
 
 }
 
@@ -64,24 +64,24 @@ bool Game::Load()
 
 	{
 		Entity tempEntity;
-		tempEntity.initEntity(EntityType::RING, 0, InnerShader, Graphics);
+		tempEntity.initEntity(EntityType::RING, 0, InnerShader, Graphics, gameWorld);
 		std::shared_ptr<Entity> temp = std::make_shared<Entity>(tempEntity);
 		Entities.push_back(temp);
 	}
 	{
 		Entity tempEntity;
-		tempEntity.initEntity(EntityType::RING, 1, MiddleShader, Graphics);
+		tempEntity.initEntity(EntityType::RING, 1, MiddleShader, Graphics, gameWorld);
 		std::shared_ptr<Entity> temp = std::make_shared<Entity>(tempEntity);
 		Entities.push_back(temp);
 	}
 	{
 		Entity tempEntity;
-		tempEntity.initEntity(EntityType::RING, 2, OuterShader, Graphics);
+		tempEntity.initEntity(EntityType::RING, 2, OuterShader, Graphics, gameWorld);
 		std::shared_ptr<Entity> temp = std::make_shared<Entity>(tempEntity);
 		Entities.push_back(temp);
 	}
 
-	Arrow->initEntity(EntityType::ARROW, 3, ArrowShader, Graphics);
+	Arrow->initEntity(EntityType::ARROW, 3, ArrowShader, Graphics, gameWorld);
 
 
 	// Setting initial game state
@@ -108,6 +108,14 @@ void Game::Update()
 		UpdateRingSelection();
 		UpdateSelectedRingRotation();
 		UpdateRingTestSelection();
+
+		std::vector<std::shared_ptr<Entity>>::iterator it;
+
+
+		// Syncing renderable and physics locations
+		for (it = Entities.begin(); it != Entities.end(); it++) {
+			(*it)->syncGraphics();
+		}
 	}
 
 	// If mode is Test then check to see if the rings are in their correct positions, play a noise corresponding to how close the player is 

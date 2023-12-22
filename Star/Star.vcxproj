@@ -148,6 +148,7 @@
     <ClCompile Include="Source\Engine\ITexture.cpp" />
     <ClCompile Include="Source\EntryPoints\WindowsMain.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />
+    <ClCompile Include="Source\Game\WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\EntityComponentSystem\Entity.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Source\Engine\ITexture.h" />
     <ClInclude Include="Source\Engine\Transform2D.h" />
     <ClInclude Include="Source\Game\Game.h" />
+    <ClInclude Include="Source\Game\WorldMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
