@@ -13,7 +13,7 @@ class IRenderable;
 class Entity;
 
 enum RingLayer { Outer, Middle, Inner, NumRings };
-enum GameState { Setup, Playing, Test, NumModes };
+enum GameState { Setup, Playing, Test, NumModes, Paused };
 static const unsigned int NumberOfRings = static_cast<int>(NumRings);
 
 class Game : public IApplication
@@ -27,6 +27,9 @@ public:
 	virtual bool Load();
 	virtual void Update();
 	virtual void Cleanup();
+
+	void setState(GameState state) { State = state; }
+	GameState getState() { return State; }
 
 private:
 

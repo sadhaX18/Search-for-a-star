@@ -1,6 +1,6 @@
 #include "box2d/box2d.h"
-#include "../IGraphics.h"
 #include "Entity.h"
+#include "../IGraphics.h"
 #include "../IRenderable.h"
 
 Entity::Entity() : entityType(EntityType::UNDEFINED), entityID(0), physics(nullptr) {}
@@ -26,4 +26,13 @@ void Entity::syncGraphics() {
 
 	renderable->SetPosition(transform.p.x, transform.p.y);
 	renderable->SetRotation(transform.q.GetAngle());
+}
+
+void Entity::syncPhysics() {
+	auto transform = renderable->GetTransform();
+	physics->SetTransform(b2Vec2(transform.PositionX, transform.PositionY), transform.Rotation);
+}
+
+void Entity::Update() {
+
 }

@@ -54,6 +54,33 @@ bool Game::Load()
 	IShader* OuterShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", OuterTexture);
 	IShader* ArrowShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", ArrowTexture);
 	
+	// Loading map
+	// Base floor
+	b2BodyDef groundBodyDef;
+	groundBodyDef.position.Set(0.0f, -100.0f);
+	b2Body* groundBody = gameWorld->CreateBody(&groundBodyDef);
+	b2PolygonShape groundBox;
+	groundBox.SetAsBox(500.0f, 10.0f);
+	groundBody->CreateFixture(&groundBox, 0.0f);
+
+
+	// dynamic body to be transferred to player
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(0.0f, 4.0f);
+	b2Body* body = gameWorld->CreateBody(&bodyDef);
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(1.0f, 1.0f);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	body->CreateFixture(&fixtureDef);
+
+
+
 	// Loading all entities
 
 	//Rings[static_cast<unsigned int>(RingLayer::Inner)] = Graphics->CreateBillboard(InnerShader);
@@ -83,7 +110,6 @@ bool Game::Load()
 
 	Arrow->initEntity(EntityType::ARROW, 3, ArrowShader, Graphics, gameWorld);
 
-
 	// Setting initial game state
 	std::srand(static_cast<unsigned int>(std::time(0)));
 
@@ -109,13 +135,18 @@ void Game::Update()
 		UpdateSelectedRingRotation();
 		UpdateRingTestSelection();
 
-		std::vector<std::shared_ptr<Entity>>::iterator it;
+		// Input update
+		// Physics update
+		// Game logics (ex colliding with enemy, interacting with end goal door or collecting coins)
 
 
 		// Syncing renderable and physics locations
+
+		std::vector<std::shared_ptr<Entity>>::iterator it;
 		for (it = Entities.begin(); it != Entities.end(); it++) {
 			(*it)->syncGraphics();
 		}
+		Arrow->syncGraphics();
 	}
 
 	// If mode is Test then check to see if the rings are in their correct positions, play a noise corresponding to how close the player is 
@@ -123,6 +154,10 @@ void Game::Update()
 	{
 		TestRingSolution();
 		State = GameState::Setup;
+	}
+
+	if (State == GameState::Paused) {
+
 	}
 }
 
@@ -136,9 +171,11 @@ void Game::SetupEachRing()
 	for (unsigned int Ring = 0; Ring < NumberOfRings; ++Ring)
 	{
 		Entities.at(Ring)->getRenderable()->SetRotation(static_cast<float>(fmod(rand(), Pie)));
+		Entities.at(Ring)->syncPhysics();
 	}
 
 	Arrow->getRenderable()->SetRotation(static_cast<float>(fmod(rand(), Pie)));
+	Arrow->syncPhysics();
 }
 
 void Game::UpdateRingSelection()
