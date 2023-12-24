@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <memory>
-#include "box2d/box2d.h"
 #include "Engine/IApplication.h"
 
 class IGraphics;
@@ -11,6 +10,9 @@ class ITexture;
 class IShader;
 class IRenderable;
 class Entity;
+class Player;
+class WorldMap;
+class b2World;
 
 enum RingLayer { Outer, Middle, Inner, NumRings };
 enum GameState { Setup, Playing, Test, NumModes, Paused };
@@ -45,6 +47,8 @@ private:
 	RingLayer SelectedRing;
 	GameState State;
 
+	std::shared_ptr<Player> player;
+	std::shared_ptr<WorldMap> mapGenerator;
 	std::shared_ptr<b2World> gameWorld;
 };
 

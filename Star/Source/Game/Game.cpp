@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "box2d/box2d.h"
 
 #include "Engine/IGraphics.h"
 #include "Engine/ITexture.h"
@@ -6,6 +7,9 @@
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
 #include "Engine/EntityComponentSystem/Entity.h"
+#include "Engine/EntityComponentSystem/Player.h"
+
+#include "WorldMap.h"
 
 #include <ctime>
 #include <math.h>
@@ -23,13 +27,16 @@ IApplication* GetApplication(IGraphics* Graphics, IInput* Input)
 	return new Game(Graphics, Input);
 }
 
-Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Entities(), SelectedRing(), State()
+Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Entities()
 {
 	Arrow = std::make_shared<Entity>();
+	player = std::make_shared<Player>();
 
 	//init gameWorld
-	b2Vec2 gravity(0.0f, 10.0f);
+	b2Vec2 gravity(0.0f, -10.0f);
 	gameWorld = std::make_shared<b2World>(gravity);
+
+	mapGenerator = std::make_shared<WorldMap>(Graphics);
 
 }
 
@@ -56,28 +63,11 @@ bool Game::Load()
 	
 	// Loading map
 	// Base floor
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(0.0f, -100.0f);
-	b2Body* groundBody = gameWorld->CreateBody(&groundBodyDef);
-	b2PolygonShape groundBox;
-	groundBox.SetAsBox(500.0f, 10.0f);
-	groundBody->CreateFixture(&groundBox, 0.0f);
+	mapGenerator->initMap(Graphics, gameWorld);
 
 
 	// dynamic body to be transferred to player
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.0f, 4.0f);
-	b2Body* body = gameWorld->CreateBody(&bodyDef);
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-
-	body->CreateFixture(&fixtureDef);
+	player->initEntity(EntityType::PLAYER, 5, InnerShader, Graphics, gameWorld, 0.0f, 1000.0f);
 
 
 
@@ -137,6 +127,8 @@ void Game::Update()
 
 		// Input update
 		// Physics update
+		float timeStep = 1.0f / 600.0f;
+		gameWorld->Step(timeStep, 6, 2);
 		// Game logics (ex colliding with enemy, interacting with end goal door or collecting coins)
 
 
@@ -147,6 +139,7 @@ void Game::Update()
 			(*it)->syncGraphics();
 		}
 		Arrow->syncGraphics();
+		player->syncGraphics();
 	}
 
 	// If mode is Test then check to see if the rings are in their correct positions, play a noise corresponding to how close the player is 

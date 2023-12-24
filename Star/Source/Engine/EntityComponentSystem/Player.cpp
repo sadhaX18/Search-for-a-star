@@ -4,7 +4,7 @@
 #include "../IGraphics.h"
 #include "../IRenderable.h"
 
-Player::Player() : Entity(EntityType::PLAYER, 0) {}
+Player::Player() : Entity(EntityType::PLAYER, 5) {}
 Player::~Player() {}
 
 void Player::initEntity(EntityType type, int id, IShader* shader, IGraphics* graphics,
@@ -19,7 +19,7 @@ void Player::initEntity(EntityType type, int id, IShader* shader, IGraphics* gra
 	physics = gameWorld->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);
+	dynamicBox.SetAsBox(80.0f, 80.0f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
@@ -27,5 +27,4 @@ void Player::initEntity(EntityType type, int id, IShader* shader, IGraphics* gra
 	fixtureDef.friction = 0.3f;
 
 	physics->CreateFixture(&fixtureDef);
-
 }
