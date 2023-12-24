@@ -14,7 +14,7 @@ public:
 	~Player();
 
 	void initEntity(EntityType type, int id, IShader* shader, IGraphics* graphics,
-		std::shared_ptr<b2World> gameWorld, float x, float y) override;
+		std::shared_ptr<b2World> gameWorld, float x = 0.0f, float y = 0.0f);
 private:
 	std::shared_ptr<InputComponent> input;
 };

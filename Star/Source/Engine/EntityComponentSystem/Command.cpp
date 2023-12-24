@@ -7,3 +7,16 @@ void PauseCommand::execute(Game* game) {
 	else
 		game->setState(GameState::Paused);
 }
+
+void MoveRightCommand::execute(Game* game) {
+
+}
+void MoveLeftCommand::execute(Game* game) {
+
+}
+void JumpCommand::execute(Game* game) {
+
+}
+void CrouchCommand::execute(Game* game) {
+
+}

@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "../IGraphics.h"
 #include "../IRenderable.h"
+#include "../IShader.h"
 
 Entity::Entity() : entityType(EntityType::UNDEFINED), entityID(0), physics(nullptr) {}
 Entity::Entity(EntityType type, int id) : entityType(type), entityID(id), physics(nullptr) {}

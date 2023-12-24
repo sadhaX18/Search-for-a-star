@@ -31,4 +31,5 @@ std::vector<std::shared_ptr<Command>>& InputComponent::handleInput(IInput* input
 	if (input->IsPressed(boundCommands.at(PAUSE))) {
 		simultaneousCommands.push_back(pauseCommand);
 	}
+	return simultaneousCommands;
 }
