@@ -31,6 +31,8 @@ public:
 
 	std::shared_ptr<IRenderable> getRenderable() { return renderable; }
 
+	b2Body* getPhysicsComponent() { return physics; }
+
 
 protected:
 	EntityType entityType;

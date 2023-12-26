@@ -3,6 +3,7 @@
 #include "box2d/box2d.h"
 #include "../IGraphics.h"
 #include "../IRenderable.h"
+#include "InputComponent.h"
 
 Player::Player() : Entity(EntityType::PLAYER, 5) {}
 Player::~Player() {}
@@ -27,4 +28,6 @@ void Player::initEntity(EntityType type, int id, IShader* shader, IGraphics* gra
 	fixtureDef.friction = 0.3f;
 
 	physics->CreateFixture(&fixtureDef);
+
+	input = std::make_shared<InputComponent>();
 }

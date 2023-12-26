@@ -1,4 +1,7 @@
 #include "Game/Game.h"
+#include "box2d/box2d.h"
+#include "Entity.h"
+#include "Player.h"
 #include "Command.h"
 
 void PauseCommand::execute(Game* game) {
@@ -9,14 +12,14 @@ void PauseCommand::execute(Game* game) {
 }
 
 void MoveRightCommand::execute(Game* game) {
-
+	game->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(10.0f, 0.0f), true);
 }
 void MoveLeftCommand::execute(Game* game) {
-
+	game->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(-10.0f, 0.0f), true);
 }
 void JumpCommand::execute(Game* game) {
-
+	game->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(0.0f, 30.0f), true);
 }
-void CrouchCommand::execute(Game* game) {
-
+void FallCommand::execute(Game* game) {
+	game->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(0.0f, -10.0f), true);
 }

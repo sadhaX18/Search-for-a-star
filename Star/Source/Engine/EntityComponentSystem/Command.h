@@ -18,6 +18,6 @@ class MoveLeftCommand :public Command {
 class JumpCommand :public Command {
 	void execute(Game* game) override;
 };
-class CrouchCommand :public Command {
+class FallCommand :public Command {
 	void execute(Game* game) override;
 };

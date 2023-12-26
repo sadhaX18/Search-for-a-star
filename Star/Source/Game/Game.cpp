@@ -9,6 +9,9 @@
 #include "Engine/EntityComponentSystem/Entity.h"
 #include "Engine/EntityComponentSystem/Player.h"
 
+#include "Engine/EntityComponentSystem/Command.h"
+#include "Engine/EntityComponentSystem/InputComponent.h"
+
 #include "WorldMap.h"
 
 #include <ctime>
@@ -27,7 +30,7 @@ IApplication* GetApplication(IGraphics* Graphics, IInput* Input)
 	return new Game(Graphics, Input);
 }
 
-Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Entities()
+Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Entities(), State(), SelectedRing()
 {
 	Arrow = std::make_shared<Entity>();
 	player = std::make_shared<Player>();
@@ -67,7 +70,7 @@ bool Game::Load()
 
 
 	// dynamic body to be transferred to player
-	player->initEntity(EntityType::PLAYER, 5, InnerShader, Graphics, gameWorld, 0.0f, 1000.0f);
+	//player->initEntity(EntityType::PLAYER, 5, InnerShader, Graphics, gameWorld, 0.0f, 1000.0f);
 
 
 
@@ -126,6 +129,12 @@ void Game::Update()
 		UpdateRingTestSelection();
 
 		// Input update
+		/*std::vector<std::shared_ptr<Command>> commands = player->getInputComponent()->handleInput(Input);
+		if (!commands.empty()) {
+			for (auto it = commands.begin(); it != commands.end(); it++) {
+				(*it)->execute(this);
+			}
+		}*/
 		// Physics update
 		float timeStep = 1.0f / 600.0f;
 		gameWorld->Step(timeStep, 6, 2);
@@ -133,13 +142,11 @@ void Game::Update()
 
 
 		// Syncing renderable and physics locations
-
-		std::vector<std::shared_ptr<Entity>>::iterator it;
-		for (it = Entities.begin(); it != Entities.end(); it++) {
+		for (auto it = Entities.begin(); it != Entities.end(); it++) {
 			(*it)->syncGraphics();
 		}
 		Arrow->syncGraphics();
-		player->syncGraphics();
+		//player->syncGraphics();
 	}
 
 	// If mode is Test then check to see if the rings are in their correct positions, play a noise corresponding to how close the player is 
@@ -150,7 +157,8 @@ void Game::Update()
 	}
 
 	if (State == GameState::Paused) {
-
+		if (Input->IsPressed(DefaultSelect))
+			State = GameState::Playing;
 	}
 }
 

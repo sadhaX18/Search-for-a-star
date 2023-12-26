@@ -31,7 +31,9 @@ public:
 	virtual void Cleanup();
 
 	void setState(GameState state) { State = state; }
-	GameState getState() { return State; }
+	GameState getState() const { return State; }
+
+	std::shared_ptr<Player> getPlayer() { return player; }
 
 private:
 
