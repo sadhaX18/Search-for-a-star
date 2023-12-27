@@ -16,11 +16,11 @@ void Player::initEntity(EntityType type, int id, IShader* shader, IGraphics* gra
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(x, y);
+	bodyDef.position.Set(x / 100.0f, y / 100.0f);
 	physics = gameWorld->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(80.0f, 80.0f);
+	dynamicBox.SetAsBox(80.0f / 100.0f, 80.0f / 100.0f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;

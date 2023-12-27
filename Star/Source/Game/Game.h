@@ -49,6 +49,7 @@ private:
 	RingLayer SelectedRing;
 	GameState State;
 
+	// Scene 
 	std::shared_ptr<Player> player;
 	std::shared_ptr<WorldMap> mapGenerator;
 	std::shared_ptr<b2World> gameWorld;

@@ -134,7 +134,7 @@ void DirectX11Graphics::Update()
 {
     if (Context && SwapChain)
     {
-        float clearColour[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float clearColour[4] = { 0.125f, 0.25f, 0.5f, 0.5f };
         Context->ClearRenderTargetView(BackbufferView, clearColour);
 
         D3D11_VIEWPORT viewport;

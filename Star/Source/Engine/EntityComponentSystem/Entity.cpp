@@ -16,7 +16,7 @@ void Entity::initEntity(EntityType type, int id, IShader* shader, IGraphics* gra
 	entityID = id;
 
 	b2BodyDef rigidBodyDef;
-	rigidBodyDef.position.Set(x, y);
+	rigidBodyDef.position.Set(x / 100.0f, y / 100.0f);
 
 	physics = gameWorld->CreateBody(&rigidBodyDef);
 
@@ -25,13 +25,13 @@ void Entity::initEntity(EntityType type, int id, IShader* shader, IGraphics* gra
 void Entity::syncGraphics() {
 	b2Transform transform = physics->GetTransform();
 
-	renderable->SetPosition(transform.p.x, transform.p.y);
+	renderable->SetPosition(transform.p.x * 100.0f, transform.p.y * 100.0f);
 	renderable->SetRotation(transform.q.GetAngle());
 }
 
 void Entity::syncPhysics() {
 	auto transform = renderable->GetTransform();
-	physics->SetTransform(b2Vec2(transform.PositionX, transform.PositionY), transform.Rotation);
+	physics->SetTransform(b2Vec2(transform.PositionX / 100.0f, transform.PositionY / 100.0f), transform.Rotation);
 }
 
 void Entity::Update() {

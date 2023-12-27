@@ -20,10 +20,10 @@ void WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld) 
 				// physics object
 				Tile temp;
 				b2BodyDef groundBodyDef;
-				groundBodyDef.position.Set(x, y);
+				groundBodyDef.position.Set(x / 100.0f, y / 100.0f);
 				temp.tileBody = gameWorld->CreateBody(&groundBodyDef);
 				b2PolygonShape groundBox;
-				groundBox.SetAsBox(35.0f, 35.0f);
+				groundBox.SetAsBox(35.0f / 100.0f, 35.0f / 100.0f);
 				temp.tileBody->CreateFixture(&groundBox, 0.0f);
 
 				// graphics object
@@ -32,7 +32,7 @@ void WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld) 
 				// Syncing physics and graphics locations
 				b2Transform transform = temp.tileBody->GetTransform();
 
-				temp.tileRenderable->SetPosition(transform.p.x, transform.p.y);
+				temp.tileRenderable->SetPosition(transform.p.x * 100.0f, transform.p.y * 100.0f);
 				temp.tileRenderable->SetRotation(transform.q.GetAngle());
 
 				worldMap[i][j] = temp;

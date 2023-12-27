@@ -70,7 +70,7 @@ bool Game::Load()
 
 
 	// dynamic body to be transferred to player
-	//player->initEntity(EntityType::PLAYER, 5, InnerShader, Graphics, gameWorld, 0.0f, 1000.0f);
+	player->initEntity(EntityType::PLAYER, 5, InnerShader, Graphics, gameWorld, 0.0f, 0.0f);
 
 
 
@@ -129,12 +129,13 @@ void Game::Update()
 		UpdateRingTestSelection();
 
 		// Input update
-		/*std::vector<std::shared_ptr<Command>> commands = player->getInputComponent()->handleInput(Input);
+		std::vector<std::shared_ptr<Command>> commands = player->getInputComponent()->handleInput(Input);
 		if (!commands.empty()) {
 			for (auto it = commands.begin(); it != commands.end(); it++) {
 				(*it)->execute(this);
 			}
-		}*/
+		}
+
 		// Physics update
 		float timeStep = 1.0f / 600.0f;
 		gameWorld->Step(timeStep, 6, 2);
@@ -146,7 +147,7 @@ void Game::Update()
 			(*it)->syncGraphics();
 		}
 		Arrow->syncGraphics();
-		//player->syncGraphics();
+		player->syncGraphics();
 	}
 
 	// If mode is Test then check to see if the rings are in their correct positions, play a noise corresponding to how close the player is 
