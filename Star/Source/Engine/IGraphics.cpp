@@ -20,7 +20,7 @@ IGraphics::~IGraphics()
     //    delete bucket->first;
     //}
 
-    //Renderables.clear();
+    Renderables.clear();
 
     for (auto texture = Textures.begin(); texture != Textures.end(); ++texture)
     {

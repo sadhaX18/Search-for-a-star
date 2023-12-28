@@ -6,13 +6,15 @@ class b2Body;
 class b2World;
 class IShader;
 class IGraphics;
+class Resources;
 
 enum class EntityType
 {
 	UNDEFINED = -1,
-	ARROW = 0,
-	RING = 1,
-	PLAYER = 2
+	KEY = 0,
+	DOOR = 1,
+	SPIKE = 2,
+	PLAYER = 3
 };
 
 class Entity {
@@ -23,11 +25,9 @@ public:
 
 	void syncGraphics();
 	void syncPhysics();
-
-	virtual void Update();
 	
-	virtual void initEntity(EntityType type, int id, IShader* shader, IGraphics* graphics, 
-		std::shared_ptr<b2World> gameWorld, float x = 0.0f, float y = 0.0f);
+	virtual void initEntity(EntityType type, int id, std::shared_ptr<Resources> resources, IGraphics* graphics, 
+		std::shared_ptr<b2World> gameWorld, float x = 0.0f, float y = 0.0f) = 0;
 
 	std::shared_ptr<IRenderable> getRenderable() { return renderable; }
 

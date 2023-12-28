@@ -13,10 +13,9 @@ class Entity;
 class Player;
 class WorldMap;
 class b2World;
+class Resources;
 
-enum RingLayer { Outer, Middle, Inner, NumRings };
-enum GameState { Setup, Playing, Test, NumModes, Paused };
-static const unsigned int NumberOfRings = static_cast<int>(NumRings);
+enum GameState { Setup, Playing, SceneChange, NumModes, Paused };
 
 class Game : public IApplication
 {
@@ -37,17 +36,9 @@ public:
 
 private:
 
-	void SetupEachRing();
-	void UpdateRingSelection();
-	void UpdateSelectedRingRotation();
-	void UpdateRingTestSelection();
-	void TestRingSolution();
-
-	// IRenderable* Rings[NumberOfRings];
-	std::shared_ptr<Entity> Arrow;
-	std::vector<std::shared_ptr<Entity>> Entities;
-	RingLayer SelectedRing;
 	GameState State;
+
+	std::shared_ptr<Resources> resources;
 
 	// Scene 
 	std::shared_ptr<Player> player;

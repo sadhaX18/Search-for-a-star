@@ -2,16 +2,15 @@
 #include "Engine/IRenderable.h"
 #include "Engine/IShader.h"
 #include "Engine/ITexture.h"
+#include "Engine/EntityComponentSystem/Resources.h"
 #include "WorldMap.h"
 
 Tile::Tile() : tileBody(nullptr) {}
-Tile::~Tile() {} // Not deleting tileBody here, have to figure out when to delete
+Tile::~Tile() {} // Not deleting tileBody here, will be automatically deleted when world is deleted at scene change
 
-WorldMap::WorldMap(IGraphics* graphics) {
-	loadResources(graphics);
-	
-}
-void WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld) {
+WorldMap::WorldMap(IGraphics* graphics) {}
+
+void WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources) {
 	for (int i = 0; i < 16; i++) {
 		float y = +505.0f - (i * 70.0f);
 		for (int j = 0; j < 28; j++) {
@@ -27,7 +26,7 @@ void WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld) 
 				temp.tileBody->CreateFixture(&groundBox, 0.0f);
 
 				// graphics object
-				temp.tileRenderable = graphics->CreateBillboard(tileMap.at(getTileSetType(i,j)));
+				temp.tileRenderable = graphics->CreateBillboard(resources->getTileMap()->at(getTileSetType(i, j)));
 
 				// Syncing physics and graphics locations
 				b2Transform transform = temp.tileBody->GetTransform();
@@ -114,37 +113,4 @@ TileSet WorldMap::getTileSetType(int i, int j) {
 			}
 		}
 	}
-}
-
-void WorldMap::loadResources(IGraphics* graphics) {
-	ITexture* TopTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/Top.dds");
-	ITexture* BottomTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/Bottom.dds");
-	ITexture* LeftTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/Left.dds");
-	ITexture* RightTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/Right.dds");
-	ITexture* MiddleTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/Middle.dds");
-	ITexture* TopLeftTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/TopLeft.dds");
-	ITexture* TopRightTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/TopRight.dds");
-	ITexture* BottomLeftTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/BottomLeft.dds");
-	ITexture* BottomRightTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/BottomRight.dds");
-
-	IShader* TopTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", TopTileTexture);
-	IShader* BottomTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomTileTexture);
-	IShader* LeftTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", LeftTileTexture);
-	IShader* RightTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", RightTileTexture);
-	IShader* MiddleTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", MiddleTileTexture);
-	IShader* TopLeftTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", TopLeftTileTexture);
-	IShader* TopRightTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", TopRightTileTexture);
-	IShader* BottomLeftTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomLeftTileTexture);
-	IShader* BottomRightTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomRightTileTexture);
-
-
-	tileMap.insert({ TileSet::TOP, TopTileShader });
-	tileMap.insert({ TileSet::BOTTOM, BottomTileShader });
-	tileMap.insert({ TileSet::LEFT, LeftTileShader });
-	tileMap.insert({ TileSet::RIGHT, RightTileShader });
-	tileMap.insert({ TileSet::MIDDLE, MiddleTileShader });
-	tileMap.insert({ TileSet::TOP_LEFT, TopLeftTileShader });
-	tileMap.insert({ TileSet::TOP_RIGHT, TopRightTileShader });
-	tileMap.insert({ TileSet::BOTTOM_LEFT, BottomLeftTileShader });
-	tileMap.insert({ TileSet::BOTTOM_RIGHT, BottomRightTileShader });
 }

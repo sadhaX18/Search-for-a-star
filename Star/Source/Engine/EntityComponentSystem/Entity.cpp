@@ -9,19 +9,6 @@ Entity::Entity(EntityType type, int id) : entityType(type), entityID(id), physic
 
 Entity::~Entity() {}
 
-void Entity::initEntity(EntityType type, int id, IShader* shader, IGraphics* graphics,
-	std::shared_ptr<b2World> gameWorld, float x, float y) {
-	renderable = graphics->CreateBillboard(shader);
-	entityType = type;
-	entityID = id;
-
-	b2BodyDef rigidBodyDef;
-	rigidBodyDef.position.Set(x / 100.0f, y / 100.0f);
-
-	physics = gameWorld->CreateBody(&rigidBodyDef);
-
-}
-
 void Entity::syncGraphics() {
 	b2Transform transform = physics->GetTransform();
 
@@ -32,8 +19,4 @@ void Entity::syncGraphics() {
 void Entity::syncPhysics() {
 	auto transform = renderable->GetTransform();
 	physics->SetTransform(b2Vec2(transform.PositionX / 100.0f, transform.PositionY / 100.0f), transform.Rotation);
-}
-
-void Entity::Update() {
-
 }

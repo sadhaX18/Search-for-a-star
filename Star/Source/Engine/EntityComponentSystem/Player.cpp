@@ -3,16 +3,18 @@
 #include "box2d/box2d.h"
 #include "../IGraphics.h"
 #include "../IRenderable.h"
+
+#include "Engine/EntityComponentSystem/Resources.h"
 #include "InputComponent.h"
 
 Player::Player() : Entity(EntityType::PLAYER, 5) {}
 Player::~Player() {}
 
-void Player::initEntity(EntityType type, int id, IShader* shader, IGraphics* graphics,
+void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> resources, IGraphics* graphics,
 	std::shared_ptr<b2World> gameWorld, float x, float y) {
 	entityID = id;
 
-	renderable = graphics->CreateBillboard(shader);
+	renderable = graphics->CreateBillboard(resources->getPlayerSprite());
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
