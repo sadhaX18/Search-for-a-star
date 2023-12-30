@@ -2,7 +2,7 @@
 #include "Engine/IGraphics.h"
 #include "Resources.h"
 
-Resources::Resources() : playerSprite(nullptr) {
+Resources::Resources() : playerSprite(nullptr), spikeSprite(nullptr), doorSprite(nullptr) {
 	tileMap = std::make_shared<std::map<TileSet, IShader*>>();
 }
 Resources::~Resources() {} // All shaders will be deleted by IGraphics
@@ -19,6 +19,8 @@ void Resources::loadResources(IGraphics* graphics) {
 	ITexture* BottomRightTileTexture = graphics->CreateTexture(L"Resource/Textures/TileSet/BottomRight.dds");
 	
 	ITexture* playerTexture = graphics->CreateTexture(L"Resource/Textures/InnerRing.dds");
+	ITexture* spriteTexture = graphics->CreateTexture(L"Resource/Textures/Spike.dds");
+	ITexture* doorTexture = graphics->CreateTexture(L"Resource/Textures/Door.dds");
 
 	IShader* TopTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", TopTileTexture);
 	IShader* BottomTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomTileTexture);
@@ -31,6 +33,8 @@ void Resources::loadResources(IGraphics* graphics) {
 	IShader* BottomRightTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomRightTileTexture);
 
 	playerSprite = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", playerTexture);
+	spikeSprite = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", spriteTexture);
+	doorSprite = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", doorTexture);
 
 	tileMap->insert({ TileSet::TOP, TopTileShader });
 	tileMap->insert({ TileSet::BOTTOM, BottomTileShader });

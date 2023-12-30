@@ -16,13 +16,15 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 
 	renderable = graphics->CreateBillboard(resources->getPlayerSprite());
 
+	renderable->SetScale(0.25f, 0.5f);
+
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x / 100.0f, y / 100.0f);
 	physics = gameWorld->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(80.0f / 100.0f, 80.0f / 100.0f);
+	dynamicBox.SetAsBox(20.0f / 100.0f, 40.0f / 100.0f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;

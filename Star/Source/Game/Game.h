@@ -3,13 +3,14 @@
 
 #include <vector>
 #include <memory>
+#include <list>
 #include "Engine/IApplication.h"
 
 class IGraphics;
 class ITexture;
 class IShader;
 class IRenderable;
-class Entity;
+class StaticEntity;
 class Player;
 class WorldMap;
 class b2World;
@@ -42,6 +43,7 @@ private:
 
 	// Scene 
 	std::shared_ptr<Player> player;
+	std::shared_ptr<std::list<StaticEntity>> entities;
 	std::shared_ptr<WorldMap> mapGenerator;
 	std::shared_ptr<b2World> gameWorld;
 };

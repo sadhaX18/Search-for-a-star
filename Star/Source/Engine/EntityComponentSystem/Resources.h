@@ -27,8 +27,12 @@ public:
 	std::shared_ptr<std::map<TileSet, IShader*>> getTileMap() { return tileMap; }
 
 	IShader* getPlayerSprite() { return playerSprite; }
+	IShader* getSpikeSprite() { return spikeSprite; }
+	IShader* getDoorSprite() { return doorSprite; }
 
 private:
 	std::shared_ptr<std::map<TileSet, IShader*>> tileMap;
 	IShader* playerSprite;
+	IShader* spikeSprite;
+	IShader* doorSprite;
 };

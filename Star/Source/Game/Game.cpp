@@ -8,6 +8,7 @@
 #include "Engine/IInput.h"
 #include "Engine/EntityComponentSystem/Entity.h"
 #include "Engine/EntityComponentSystem/Player.h"
+#include "Engine/EntityComponentSystem/StaticEntity.h"
 
 #include "Engine/EntityComponentSystem/Resources.h"
 
@@ -28,6 +29,7 @@ Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, In
 {
 	player = std::make_shared<Player>();
 	resources = std::make_shared<Resources>();
+	entities = std::make_shared<std::list<StaticEntity>>();
 
 	//init gameWorld
 	b2Vec2 gravity(0.0f, -10.0f);
@@ -50,15 +52,6 @@ bool Game::Load()
 {
 	// Loading all textures
 	resources->loadResources(Graphics);
-	//ITexture* InnerTexture = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds");
-	//IShader* InnerShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", InnerTexture);
-	// Loading map
-	// Base floor
-	mapGenerator->initMap(Graphics, gameWorld, resources);
-
-
-	// dynamic body to be transferred to player
-	player->initEntity(EntityType::PLAYER, 5, resources, Graphics, gameWorld, 0.0f, 0.0f);
 
 	// Setting initial game state
 	std::srand(static_cast<unsigned int>(std::time(0)));
@@ -73,7 +66,14 @@ void Game::Update()
 	if (State == GameState::Setup)
 	{
 		// Load map
+		std::list<StaticEntity> mapEntities = mapGenerator->initMap(Graphics, gameWorld, resources);
+
+		for (auto it = mapEntities.begin(); it != mapEntities.end(); it++) {
+			entities->push_back((*it));
+		}
+
 		// initialize player
+		player->initEntity(EntityType::PLAYER, 5, resources, Graphics, gameWorld, 0.0f, 0.0f);
 		// initialize game components
 		State = GameState::Playing;
 	}
@@ -92,10 +92,12 @@ void Game::Update()
 		// Physics update
 		float timeStep = 1.0f / 600.0f;
 		gameWorld->Step(timeStep, 6, 2);
+
 		// Game logics (ex colliding with enemy, interacting with end goal door or collecting coins)
 
 
-		// Syncing renderable and physics locations
+
+		// Syncing renderable and physics locations (Graphics update)
 		player->syncGraphics();
 	}
 

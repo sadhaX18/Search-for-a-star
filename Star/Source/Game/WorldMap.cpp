@@ -5,12 +5,19 @@
 #include "Engine/EntityComponentSystem/Resources.h"
 #include "WorldMap.h"
 
+#include "Engine/EntityComponentSystem/Entity.h"
+#include "Engine/EntityComponentSystem/StaticEntity.h"
+
 Tile::Tile() : tileBody(nullptr) {}
 Tile::~Tile() {} // Not deleting tileBody here, will be automatically deleted when world is deleted at scene change
 
 WorldMap::WorldMap(IGraphics* graphics) {}
+WorldMap::~WorldMap() {}
 
-void WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources) {
+std::list<StaticEntity> WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources) {
+	
+	std::list<StaticEntity> entities;
+
 	for (int i = 0; i < 16; i++) {
 		float y = +505.0f - (i * 70.0f);
 		for (int j = 0; j < 28; j++) {
@@ -36,8 +43,19 @@ void WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, 
 
 				worldMap[i][j] = temp;
 			}
+			else if (mapDef[i][j] == 2) {
+				StaticEntity spike;
+				spike.initEntity(EntityType::SPIKE, 5, resources, graphics, gameWorld, x, y);
+				entities.push_back(spike);
+			}
+			else if (mapDef[i][j] == 3) {
+				StaticEntity door;
+				door.initEntity(EntityType::DOOR, 10, resources, graphics, gameWorld, x, y);
+				entities.push_back(door);
+			}
 		}
 	}
+	return entities;
 }
 
 TileSet WorldMap::getTileSetType(int i, int j) {
