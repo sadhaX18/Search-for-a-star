@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Engine\EntityComponentSystem\CollisionHandler.cpp" />
     <ClCompile Include="Source\Engine\EntityComponentSystem\Command.cpp" />
     <ClCompile Include="Source\Engine\EntityComponentSystem\Entity.cpp" />
     <ClCompile Include="Source\Engine\EntityComponentSystem\InputComponent.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Source\Game\WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Engine\EntityComponentSystem\CollisionHandler.h" />
     <ClInclude Include="Source\Engine\EntityComponentSystem\Command.h" />
     <ClInclude Include="Source\Engine\EntityComponentSystem\Entity.h" />
     <ClInclude Include="Source\Engine\EntityComponentSystem\InputComponent.h" />

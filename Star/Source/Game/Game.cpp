@@ -14,6 +14,7 @@
 
 #include "Engine/EntityComponentSystem/Command.h"
 #include "Engine/EntityComponentSystem/InputComponent.h"
+#include "Engine//EntityComponentSystem/CollisionHandler.h"
 
 #include "WorldMap.h"
 
@@ -34,6 +35,8 @@ Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, In
 	//init gameWorld
 	b2Vec2 gravity(0.0f, -10.0f);
 	gameWorld = std::make_shared<b2World>(gravity);
+
+	gameWorld->SetContactListener(new CollisionHandler());
 
 	mapGenerator = std::make_shared<WorldMap>(Graphics);
 
@@ -70,10 +73,13 @@ void Game::Update()
 
 		for (auto it = mapEntities.begin(); it != mapEntities.end(); it++) {
 			entities->push_back((*it));
+			(*it).getPhysicsComponent()->SetUserData(&it);
 		}
 
 		// initialize player
 		player->initEntity(EntityType::PLAYER, 5, resources, Graphics, gameWorld, 0.0f, 0.0f);
+		player->getPhysicsComponent()->SetUserData(player.get());
+
 		// initialize game components
 		State = GameState::Playing;
 	}

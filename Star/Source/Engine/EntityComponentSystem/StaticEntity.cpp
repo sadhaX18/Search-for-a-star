@@ -35,6 +35,9 @@ void StaticEntity::initEntity(EntityType type, int id, std::shared_ptr<Resources
 		// graphics object
 		renderable = graphics->CreateBillboard(resources->getDoorSprite());
 	}
+
+	//physics->SetUserData(this);
+
 	// Syncing physics and graphics locations
 	b2Transform transform = physics->GetTransform();
 

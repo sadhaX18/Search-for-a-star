@@ -33,6 +33,7 @@ public:
 
 	b2Body* getPhysicsComponent() { return physics; }
 
+	EntityType getEntityType() { return entityType; }
 
 protected:
 	EntityType entityType;

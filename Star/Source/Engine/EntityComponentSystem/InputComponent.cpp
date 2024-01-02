@@ -17,10 +17,10 @@ InputComponent::InputComponent() :
 std::vector<std::shared_ptr<Command>>& InputComponent::handleInput(IInput* input) {
 	simultaneousCommands.clear();
 
-	if (input->IsPressed(boundCommands.at(MOVE_RIGHT))) {
+	if (input->IsHeld(boundCommands.at(MOVE_RIGHT))) {
 		simultaneousCommands.push_back(moveRightCommand);
 	}
-	if (input->IsPressed(boundCommands.at(MOVE_LEFT))) {
+	if (input->IsHeld(boundCommands.at(MOVE_LEFT))) {
 		simultaneousCommands.push_back(moveLeftCommand);
 	}
 	if (input->IsPressed(boundCommands.at(JUMP))) {
