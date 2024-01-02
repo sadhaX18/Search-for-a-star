@@ -33,7 +33,7 @@ public:
 	void setState(GameState state) { State = state; }
 	GameState getState() const { return State; }
 
-	std::shared_ptr<Player> getPlayer() { return player; }
+	Player* getPlayer() { return player; }
 
 private:
 
@@ -42,8 +42,8 @@ private:
 	std::shared_ptr<Resources> resources;
 
 	// Scene 
-	std::shared_ptr<Player> player;
-	std::shared_ptr<std::list<StaticEntity>> entities;
+	Player* player;
+	std::shared_ptr<std::list<StaticEntity*>> entities;
 	std::shared_ptr<WorldMap> mapGenerator;
 	std::shared_ptr<b2World> gameWorld;
 };

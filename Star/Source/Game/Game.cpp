@@ -28,9 +28,9 @@ IApplication* GetApplication(IGraphics* Graphics, IInput* Input)
 
 Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), State()
 {
-	player = std::make_shared<Player>();
+	player = new Player();
 	resources = std::make_shared<Resources>();
-	entities = std::make_shared<std::list<StaticEntity>>();
+	entities = std::make_shared<std::list<StaticEntity*>>();
 
 	//init gameWorld
 	b2Vec2 gravity(0.0f, -10.0f);
@@ -44,6 +44,7 @@ Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, In
 
 Game::~Game()
 {
+	delete player;
 }
 
 bool Game::IsValid()
@@ -69,16 +70,16 @@ void Game::Update()
 	if (State == GameState::Setup)
 	{
 		// Load map
-		std::list<StaticEntity> mapEntities = mapGenerator->initMap(Graphics, gameWorld, resources);
+		std::list<StaticEntity*> mapEntities = mapGenerator->initMap(Graphics, gameWorld, resources);
 
 		for (auto it = mapEntities.begin(); it != mapEntities.end(); it++) {
 			entities->push_back((*it));
-			(*it).getPhysicsComponent()->SetUserData(&it);
+			(*it)->getPhysicsComponent()->SetUserData(*it);
 		}
 
 		// initialize player
 		player->initEntity(EntityType::PLAYER, 5, resources, Graphics, gameWorld, 0.0f, 0.0f);
-		player->getPhysicsComponent()->SetUserData(player.get());
+		player->getPhysicsComponent()->SetUserData(player);
 
 		// initialize game components
 		State = GameState::Playing;

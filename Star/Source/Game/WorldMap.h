@@ -22,7 +22,7 @@ public:
 	WorldMap(IGraphics* graphics);
 	~WorldMap();
 	//WorldMap(IGraphics* graphics, b2World* gameWorld, int mapDef[28][16]);
-	std::list<StaticEntity> initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources);
+	std::list<StaticEntity*> initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources);
 
 private:
 	TileSet getTileSetType(int i, int j);
