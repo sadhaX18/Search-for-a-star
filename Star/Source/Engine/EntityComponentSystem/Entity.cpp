@@ -4,8 +4,8 @@
 #include "../IRenderable.h"
 #include "../IShader.h"
 
-Entity::Entity() : entityType(EntityType::UNDEFINED), entityID(0), physics(nullptr) {}
-Entity::Entity(EntityType type, int id) : entityType(type), entityID(id), physics(nullptr) {}
+Entity::Entity() : entityType(EntityType::UNDEFINED), entityID(0), physics(nullptr), deleteFlag(false) {}
+Entity::Entity(EntityType type, int id) : entityType(type), entityID(id), physics(nullptr), deleteFlag(false)  {}
 
 Entity::~Entity() {}
 
@@ -17,6 +17,6 @@ void Entity::syncGraphics() {
 }
 
 void Entity::syncPhysics() {
-	auto transform = renderable->GetTransform();
+	Transform2D transform = renderable->GetTransform();
 	physics->SetTransform(b2Vec2(transform.PositionX / 100.0f, transform.PositionY / 100.0f), transform.Rotation);
 }

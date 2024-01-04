@@ -29,3 +29,9 @@ IGraphics::~IGraphics()
 
     Textures.clear();
 }
+
+void IGraphics::deleteRenderable(std::shared_ptr<IRenderable> renderable) {
+    for (auto bucket = Renderables.begin(); bucket != Renderables.end(); ++bucket) {
+        bucket->second.remove(renderable);
+    }
+}

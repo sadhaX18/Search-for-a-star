@@ -32,6 +32,8 @@ void StaticEntity::initEntity(EntityType type, int id, std::shared_ptr<Resources
 		groundBox.SetAsBox(35.0f / 100.0f, 70.0f / 100.0f);
 		physics->CreateFixture(&groundBox, 0.0f);
 
+		physics->GetFixtureList()->SetSensor(true);
+
 		// graphics object
 		renderable = graphics->CreateBillboard(resources->getDoorSprite());
 	}

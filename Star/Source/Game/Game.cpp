@@ -103,6 +103,28 @@ void Game::Update()
 		// Game logics (ex colliding with enemy, interacting with end goal door or collecting coins)
 
 
+		// Deleting entities
+		auto it = entities->begin();
+		while (it != entities->end()) {
+			if ((*it)->isDelete()) {
+				auto type = (*it)->getEntityType();
+				switch (type) {
+				case EntityType::DOOR:
+					// static_cast<StaticEntity*>(*it)->deleteEntity();
+					// delete physics and graphics components in their respective systems
+					gameWorld->DestroyBody((*it)->getPhysicsComponent());
+					Graphics->deleteRenderable((*it)->getRenderable());
+					delete (*it);
+					break;
+				default:
+					break;
+				}
+				it = entities->erase(it);
+			}
+			else {
+				it++;
+			}
+		}
 
 		// Syncing renderable and physics locations (Graphics update)
 		player->syncGraphics();

@@ -33,11 +33,14 @@ public:
 
 	b2Body* getPhysicsComponent() { return physics; }
 
-	EntityType getEntityType() { return entityType; }
+	EntityType getEntityType() const { return entityType; }
+	bool isDelete() const { return deleteFlag; }
+	void deleteEntity() { deleteFlag = true; }
 
 protected:
 	EntityType entityType;
 	int entityID;
+	bool deleteFlag;
 	std::shared_ptr<IRenderable> renderable; // Graphics component
 	b2Body* physics; // physics component - using raw pointer as Box2D does not return smart pointers
 };

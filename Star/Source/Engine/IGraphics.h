@@ -23,6 +23,7 @@ public:
 	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn) = 0;
 	virtual std::shared_ptr<IRenderable> CreateBillboard(IShader* ShaderIn) = 0;
 
+	void deleteRenderable(std::shared_ptr<IRenderable> renderable);
 
 protected:
 
