@@ -10,6 +10,8 @@
 #include "Engine/IShader.h"
 #include "Engine/IApplication.h"
 
+#include "time.h"
+
 const char WindowClassName[] = "Star";
 const char WindowTitle[] = "Search for a Star 2024";
 const int WindowWidth = 1920;
@@ -75,6 +77,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			Input->Update();
 			Application->Update();
 			Graphics->Update();
+
+			Sleep(16);
 		}
 
 		Application->Cleanup();

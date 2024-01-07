@@ -33,7 +33,7 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &circle;
 	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
+	fixtureDef.friction = 1.0f;
 
 	physics->CreateFixture(&fixtureDef);
 

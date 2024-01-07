@@ -140,6 +140,7 @@
     <ClCompile Include="Source\Engine\EntityComponentSystem\InputComponent.cpp" />
     <ClCompile Include="Source\Engine\EntityComponentSystem\Player.cpp" />
     <ClCompile Include="Source\Engine\EntityComponentSystem\Resources.cpp" />
+    <ClCompile Include="Source\Engine\EntityComponentSystem\Scene.cpp" />
     <ClCompile Include="Source\Engine\EntityComponentSystem\StaticEntity.cpp" />
     <ClCompile Include="Source\Engine\IApplication.cpp" />
     <ClCompile Include="Source\Engine\IGraphics.cpp" />
@@ -163,7 +164,7 @@
     <ClInclude Include="Source\Engine\EntityComponentSystem\InputComponent.h" />
     <ClInclude Include="Source\Engine\EntityComponentSystem\Player.h" />
     <ClInclude Include="Source\Engine\EntityComponentSystem\Resources.h" />
-    <ClInclude Include="Source\Engine\EntityComponentSystem\SceneManager.h" />
+    <ClInclude Include="Source\Engine\EntityComponentSystem\Scene.h" />
     <ClInclude Include="Source\Engine\EntityComponentSystem\StaticEntity.h" />
     <ClInclude Include="Source\Engine\IApplication.h" />
     <ClInclude Include="Source\Engine\IGraphics.h" />

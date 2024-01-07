@@ -14,6 +14,14 @@ Tile::~Tile() {} // Not deleting tileBody here, will be automatically deleted wh
 WorldMap::WorldMap(IGraphics* graphics) {}
 WorldMap::~WorldMap() {}
 
+WorldMap::WorldMap(IGraphics* graphics, int map[16][28]) {
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 28; j++) {
+			mapDef[i][j] = map[i][j];
+		}
+	}
+}
+
 std::list<StaticEntity*> WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources) {
 	
 	std::list<StaticEntity*> entities;

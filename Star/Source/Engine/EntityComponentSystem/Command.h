@@ -1,23 +1,19 @@
 #pragma once
-class Game;
+class Scene;
 class Command {
 public:
 	virtual ~Command() {};
-	virtual void execute(Game* game) = 0;
-};
-class PauseCommand :public Command {
-public:
-	void execute(Game* game) override;
+	virtual void execute(Scene* scene) = 0;
 };
 class MoveRightCommand :public Command {
-	void execute(Game* game) override;
+	void execute(Scene* scene) override;
 };
 class MoveLeftCommand :public Command {
-	void execute(Game* game) override;
+	void execute(Scene* scene) override;
 };
 class JumpCommand :public Command {
-	void execute(Game* game) override;
+	void execute(Scene* scene) override;
 };
 class FallCommand :public Command {
-	void execute(Game* game) override;
+	void execute(Scene* scene) override;
 };

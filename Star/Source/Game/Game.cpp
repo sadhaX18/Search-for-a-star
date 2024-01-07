@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "box2d/box2d.h"
+#include "Engine/EntityComponentSystem/Scene.h"
 
 #include "Engine/IGraphics.h"
 #include "Engine/ITexture.h"
@@ -28,24 +29,12 @@ IApplication* GetApplication(IGraphics* Graphics, IInput* Input)
 
 Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), State()
 {
-	player = new Player();
-	resources = std::make_shared<Resources>();
-	entities = std::make_shared<std::list<StaticEntity*>>();
+	resources = std::make_shared<Resources>();	
 
-	//init gameWorld
-	b2Vec2 gravity(0.0f, -10.0f);
-	gameWorld = std::make_shared<b2World>(gravity);
-
-	gameWorld->SetContactListener(new CollisionHandler());
-
-	mapGenerator = std::make_shared<WorldMap>(Graphics);
-
+	currentScene = std::make_shared<Scene>(Graphics, SceneType::MENU);
 }
 
-Game::~Game()
-{
-	delete player;
-}
+Game::~Game() {}
 
 bool Game::IsValid()
 {
@@ -69,71 +58,25 @@ void Game::Update()
 	// Anything needed to be done to initialize scene
 	if (State == GameState::Setup)
 	{
-		// Load map
-		std::list<StaticEntity*> mapEntities = mapGenerator->initMap(Graphics, gameWorld, resources);
+		// SetupScene
+		currentScene->SetupScene(resources);
 
-		for (auto it = mapEntities.begin(); it != mapEntities.end(); it++) {
-			entities->push_back((*it));
-			(*it)->getPhysicsComponent()->SetUserData(*it);
-		}
-
-		// initialize player
-		player->initEntity(EntityType::PLAYER, 5, resources, Graphics, gameWorld, 0.0f, 0.0f);
-		player->getPhysicsComponent()->SetUserData(player);
-
-		// initialize game components
 		State = GameState::Playing;
 	}
 
 	// If mode is Playing then read controller input and manage which ring is selected, the rotation of each ring and waiting for select to confirm positions 
 	if (State == GameState::Playing)
 	{
-		// Input update
-		std::vector<std::shared_ptr<Command>> commands = player->getInputComponent()->handleInput(Input);
-		if (!commands.empty()) {
-			for (auto it = commands.begin(); it != commands.end(); it++) {
-				(*it)->execute(this);
-			}
-		}
-
-		// Physics update
-		float timeStep = 1.0f / 600.0f;
-		gameWorld->Step(timeStep, 6, 2);
-
-		// Game logics (ex colliding with enemy, interacting with end goal door or collecting coins)
-
-
-		// Deleting entities
-		auto it = entities->begin();
-		while (it != entities->end()) {
-			if ((*it)->isDelete()) {
-				auto type = (*it)->getEntityType();
-				switch (type) {
-				case EntityType::DOOR:
-					// static_cast<StaticEntity*>(*it)->deleteEntity();
-					// delete physics and graphics components in their respective systems
-					gameWorld->DestroyBody((*it)->getPhysicsComponent());
-					Graphics->deleteRenderable((*it)->getRenderable());
-					delete (*it);
-					break;
-				default:
-					break;
-				}
-				it = entities->erase(it);
-			}
-			else {
-				it++;
-			}
-		}
-
-		// Syncing renderable and physics locations (Graphics update)
-		player->syncGraphics();
+		currentScene->UpdateScene(Input);
 	}
 
 	// Anything to be done for switching scenes { deleting current scene}
 	if (State == GameState::SceneChange)
 	{
-		// Delete scene
+		if (currentScene->SceneChange()) {
+			// Delete scene
+			currentScene->ClearScene();
+		}
 		// Load next scene
 		State = GameState::Setup;
 	}

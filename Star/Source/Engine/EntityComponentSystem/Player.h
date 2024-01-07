@@ -7,7 +7,7 @@ class InputComponent;
 
 class Player : public Entity {
 public:
-	const int maxHealth = 100;
+	const int maxSpeed = 100;
 	const int startingHealth = 60;
 
 	Player();

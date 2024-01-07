@@ -8,6 +8,7 @@
 
 class IGraphics;
 class ITexture;
+class Scene;
 class IShader;
 class IRenderable;
 class StaticEntity;
@@ -33,18 +34,13 @@ public:
 	void setState(GameState state) { State = state; }
 	GameState getState() const { return State; }
 
-	Player* getPlayer() { return player; }
-
 private:
 
 	GameState State;
 
 	std::shared_ptr<Resources> resources;
 
-	// Scene 
-	Player* player;
-	std::shared_ptr<std::list<StaticEntity*>> entities;
-	std::shared_ptr<WorldMap> mapGenerator;
-	std::shared_ptr<b2World> gameWorld;
+	std::shared_ptr<Scene> currentScene;
+
 };
 

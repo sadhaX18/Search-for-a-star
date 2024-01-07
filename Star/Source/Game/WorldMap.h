@@ -21,13 +21,13 @@ class WorldMap
 public:
 	WorldMap(IGraphics* graphics);
 	~WorldMap();
-	//WorldMap(IGraphics* graphics, b2World* gameWorld, int mapDef[28][16]);
+	WorldMap(IGraphics* graphics, int map[16][28]);
 	std::list<StaticEntity*> initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources);
 
 private:
 	TileSet getTileSetType(int i, int j);
 
-	int mapDef[16][28]= {
+	int mapDef[16][28] = {
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -46,4 +46,7 @@ private:
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
 	Tile worldMap[16][28];
+
+	IGraphics* Graphics;
+	std::shared_ptr<b2World> gameWorld;
 };
