@@ -7,8 +7,6 @@ class InputComponent;
 
 class Player : public Entity {
 public:
-	const int maxSpeed = 100;
-	const int startingHealth = 60;
 
 	Player();
 	~Player();
@@ -18,6 +16,10 @@ public:
 
 	std::shared_ptr<InputComponent> getInputComponent() { return input; }
 
+	bool isHit() { return hit; }
+	void hitSpike() { hit = true; }
+
 private:
+	bool hit = false;
 	std::shared_ptr<InputComponent> input;
 };

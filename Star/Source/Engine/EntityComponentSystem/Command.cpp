@@ -15,7 +15,7 @@ void MoveLeftCommand::execute(Scene* scene) {
 	scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(-1.0f,0.0f));
 }
 void JumpCommand::execute(Scene* scene) {
-	scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(0.0f, 100.0f), true);
+	scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(0.0f, 150.0f), true);
 }
 void FallCommand::execute(Scene* scene) {
 	scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(0.0f, -20.0f), true);

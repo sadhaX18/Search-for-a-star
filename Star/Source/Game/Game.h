@@ -43,4 +43,3 @@ private:
 	std::shared_ptr<Scene> currentScene;
 
 };
-

@@ -68,16 +68,20 @@ void Game::Update()
 	if (State == GameState::Playing)
 	{
 		currentScene->UpdateScene(Input);
+		if (currentScene->SceneChange() || currentScene->getResetLVL()) {
+			State = GameState::SceneChange;
+		}
 	}
 
 	// Anything to be done for switching scenes { deleting current scene}
 	if (State == GameState::SceneChange)
 	{
-		if (currentScene->SceneChange()) {
-			// Delete scene
-			currentScene->ClearScene();
-		}
+		// Delete scene
+		currentScene->ClearScene();
+
 		// Load next scene
+		if(!currentScene->getResetLVL())
+			currentScene->SwitchScene();
 		State = GameState::Setup;
 	}
 

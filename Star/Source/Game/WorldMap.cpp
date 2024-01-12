@@ -11,18 +11,10 @@
 Tile::Tile() : tileBody(nullptr) {}
 Tile::~Tile() {} // Not deleting tileBody here, will be automatically deleted when world is deleted at scene change
 
-WorldMap::WorldMap(IGraphics* graphics) {}
+WorldMap::WorldMap(){}
 WorldMap::~WorldMap() {}
 
-WorldMap::WorldMap(IGraphics* graphics, int map[16][28]) {
-	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 28; j++) {
-			mapDef[i][j] = map[i][j];
-		}
-	}
-}
-
-std::list<StaticEntity*> WorldMap::initMap(IGraphics* graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources) {
+std::list<StaticEntity*> WorldMap::initMap(int map[16][28], IGraphics* Graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources) {
 	
 	std::list<StaticEntity*> entities;
 
@@ -30,7 +22,7 @@ std::list<StaticEntity*> WorldMap::initMap(IGraphics* graphics, std::shared_ptr<
 		float y = +505.0f - (i * 70.0f);
 		for (int j = 0; j < 28; j++) {
 			float x = -925.0f + (j * 70.0f);
-			if (mapDef[i][j] == 1) {
+			if (map[i][j] == 1) {
 				// physics object
 				Tile temp;
 				b2BodyDef groundBodyDef;
@@ -41,7 +33,7 @@ std::list<StaticEntity*> WorldMap::initMap(IGraphics* graphics, std::shared_ptr<
 				temp.tileBody->CreateFixture(&groundBox, 0.0f);
 
 				// graphics object
-				temp.tileRenderable = graphics->CreateBillboard(resources->getTileMap()->at(getTileSetType(i, j)));
+				temp.tileRenderable = Graphics->CreateBillboard(resources->getTileMap()->at(getTileSetType(map, i, j)));
 
 				// Syncing physics and graphics locations
 				b2Transform transform = temp.tileBody->GetTransform();
@@ -51,14 +43,14 @@ std::list<StaticEntity*> WorldMap::initMap(IGraphics* graphics, std::shared_ptr<
 
 				worldMap[i][j] = temp;
 			}
-			else if (mapDef[i][j] == 2) {
+			else if (map[i][j] == 2) {
 				StaticEntity* spike = new StaticEntity();
-				spike->initEntity(EntityType::SPIKE, 5, resources, graphics, gameWorld, x, y);
+				spike->initEntity(EntityType::SPIKE, 5, resources, Graphics, gameWorld, x, y);
 				entities.push_back(spike);
 			}
-			else if (mapDef[i][j] == 3) {
+			else if (map[i][j] == 3) {
 				StaticEntity* door = new StaticEntity();
-				door->initEntity(EntityType::DOOR, 10, resources, graphics, gameWorld, x, y);
+				door->initEntity(EntityType::DOOR, 10, resources, Graphics, gameWorld, x, y);
 				entities.push_back(door);
 			}
 		}
@@ -66,17 +58,17 @@ std::list<StaticEntity*> WorldMap::initMap(IGraphics* graphics, std::shared_ptr<
 	return entities;
 }
 
-TileSet WorldMap::getTileSetType(int i, int j) {
+TileSet WorldMap::getTileSetType(int map[16][28], int i, int j) {
 	// 1-> tile 0-> empty
 	bool left = false, right = false, top = false, bottom = false; // true => empty
 	
-	if (i != 0 && mapDef[i - 1][j] == 0)
+	if (i != 0 && map[i - 1][j] == 0)
 		bottom = true;
-	if (j != 0 && mapDef[i][j-1] == 0)
+	if (j != 0 && map[i][j-1] == 0)
 		left = true;
-	if (i != 15 && mapDef[i + 1][j] == 0)
+	if (i != 15 && map[i + 1][j] == 0)
 		top = true;
-	if (j != 28 && mapDef[i][j+1] == 0)
+	if (j != 28 && map[i][j+1] == 0)
 		right = true;
 
 	if (!top) {
@@ -136,6 +128,20 @@ TileSet WorldMap::getTileSetType(int i, int j) {
 					return TileSet::MIDDLE; // top bottom and left is empty, no sprite yet
 				else
 					return TileSet::MIDDLE; // top bottom left and right is empty, no sprite yet
+			}
+		}
+	}
+}
+
+void WorldMap::clearMap(IGraphics* Graphics, std::shared_ptr<b2World> gameWorld) {
+	for (int i = 0; i < 16 ; i++) {
+		for (int j = 0; j < 28 ; j++) {
+			if (worldMap[i][j].tileBody != nullptr) {
+				gameWorld->DestroyBody(worldMap[i][j].tileBody);
+				Graphics->deleteRenderable(worldMap[i][j].tileRenderable);
+
+				worldMap[i][j].tileBody = nullptr;
+				worldMap[i][j].tileRenderable.reset();
 			}
 		}
 	}
