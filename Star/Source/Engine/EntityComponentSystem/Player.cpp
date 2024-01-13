@@ -24,9 +24,6 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 	bodyDef.fixedRotation = true;
 	physics = gameWorld->CreateBody(&bodyDef);
 
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(20.0f / 100.0f, 20.0f / 100.0f);
-
 	b2CircleShape circle;
 	circle.m_radius = 20.0f / 100.0f;
 
@@ -37,7 +34,13 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 
 	physics->CreateFixture(&fixtureDef);
 
-	//physics->SetUserData(this);
+	// Foot sensor
+	b2PolygonShape footShape;
+	footShape.SetAsBox(0.05f, 0.05f, b2Vec2(0, -0.20f), 0);
+	fixtureDef.isSensor = true;
+	b2Fixture* footSensorFixture = physics->CreateFixture(&fixtureDef);
+	footSensorFixture->SetUserData((void*)5);
+
 
 	// Syncing physics and graphics locations
 	b2Transform transform = physics->GetTransform();

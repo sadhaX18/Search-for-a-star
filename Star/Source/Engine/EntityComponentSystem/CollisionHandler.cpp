@@ -47,6 +47,17 @@ void CollisionHandler::BeginContact(b2Contact* contact) {
             }
         }
     }
+
+    // Player movement checks
+    //check if fixture A was the foot sensor
+    void* fixtureUserData = contact->GetFixtureA()->GetUserData().pointer;
+    if ((int)fixtureUserData == 5)
+        static_cast<Player*>(bodyAData.pointer)->increaseFloorContact();
+    //check if fixture B was the foot sensor
+    fixtureUserData = contact->GetFixtureB()->GetUserData().pointer;
+    if ((int)fixtureUserData == 5)
+        static_cast<Player*>(bodyBData.pointer)->increaseFloorContact();
+
 }
 void CollisionHandler::EndContact(b2Contact* contact) {
     b2BodyUserData bodyAData = contact->GetFixtureA()->GetBody()->GetUserData();
@@ -79,4 +90,15 @@ void CollisionHandler::EndContact(b2Contact* contact) {
             }
         }
     }
+
+    // Player movement checks
+    //check if fixture A was the foot sensor
+    void* fixtureUserData = contact->GetFixtureA()->GetUserData().pointer;
+    if ((int)fixtureUserData == 5)
+        static_cast<Player*>(bodyAData.pointer)->decreaseFloorContact();
+    //check if fixture B was the foot sensor
+    fixtureUserData = contact->GetFixtureB()->GetUserData().pointer;
+    if ((int)fixtureUserData == 5)
+        static_cast<Player*>(bodyBData.pointer)->decreaseFloorContact();
+
 }

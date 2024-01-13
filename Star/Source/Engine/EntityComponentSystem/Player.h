@@ -18,8 +18,20 @@ public:
 
 	bool isHit() { return hit; }
 	void hitSpike() { hit = true; }
+	void increaseFloorContact() { floorContact++; }
+	void decreaseFloorContact() { floorContact--; }
+	int getFloorContact() { return floorContact; }
+
+	void increaseLeftContact() { leftContact++; }
+	void decreaseLeftContact() { leftContact--; }
+
+	void increaseRightContact() { rightContact++; }
+	void decreaseRightContact() { rightContact--; }
 
 private:
 	bool hit = false;
+
+	int floorContact = 0, leftContact = 0, rightContact = 0;
+
 	std::shared_ptr<InputComponent> input;
 };
