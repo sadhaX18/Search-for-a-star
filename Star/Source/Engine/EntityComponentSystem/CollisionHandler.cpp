@@ -18,21 +18,31 @@ void CollisionHandler::BeginContact(b2Contact* contact) {
             if (bodyBData.pointer != nullptr) {
                 EntityType type = static_cast<Entity*>(bodyBData.pointer)->getEntityType();
                 if ( type == EntityType::DOOR) {
-                    temp->getRenderable()->SetScale(10.0f, 10.0f);
+                    static_cast<Entity*>(bodyBData.pointer)->deleteEntity();
+                }
+                else if (type == EntityType::SPIKE) {
+                    temp->hitSpike();
                 }
             }
         }
     }
     //check if fixture B is player
-    if (static_cast<Entity*>(bodyBData.pointer)->getEntityType() == EntityType::PLAYER)
-    {
+    if (bodyBData.pointer != nullptr) {
         if (static_cast<Entity*>(bodyBData.pointer)->getEntityType() == EntityType::PLAYER)
         {
-            Player* temp = static_cast<Player*>(bodyBData.pointer);
-            if (bodyAData.pointer != nullptr) {
-                EntityType type = static_cast<Entity*>(bodyAData.pointer)->getEntityType();
-                if (type == EntityType::DOOR) {
-                    temp->getRenderable()->SetScale(1.0f, 1.0f);
+            if (static_cast<Entity*>(bodyBData.pointer)->getEntityType() == EntityType::PLAYER)
+            {
+                Player* temp = static_cast<Player*>(bodyBData.pointer);
+                if (bodyAData.pointer != nullptr) {
+                    EntityType type = static_cast<Entity*>(bodyAData.pointer)->getEntityType();
+                    if (type == EntityType::DOOR) {
+                        static_cast<Entity*>(bodyAData.pointer)->deleteEntity();
+                        //temp->getRenderable()->SetScale(1.0f, 1.0f);
+
+                    }
+                    else if (type == EntityType::SPIKE) {
+                        temp->hitSpike();
+                    }
                 }
             }
         }
@@ -49,8 +59,8 @@ void CollisionHandler::EndContact(b2Contact* contact) {
             Player* temp = static_cast<Player*>(bodyAData.pointer);
             if (bodyBData.pointer != nullptr) {
                 EntityType type = static_cast<Entity*>(bodyBData.pointer)->getEntityType();
-                if (type == EntityType::DOOR) {
-                    temp->getRenderable()->SetScale(0.25f, 0.25f);
+                if (type == EntityType::SPIKE) {
+                    temp->hitSpike();
                 }
             }
         }
@@ -63,9 +73,8 @@ void CollisionHandler::EndContact(b2Contact* contact) {
             Player* temp = static_cast<Player*>(bodyBData.pointer);
             if (bodyAData.pointer != nullptr) {
                 EntityType type = static_cast<Entity*>(bodyAData.pointer)->getEntityType();
-                if (type == EntityType::DOOR) {
-                    temp->getRenderable()->SetScale(0.25f, 0.25f);
-                    static_cast<Entity*>(bodyAData.pointer)->deleteEntity();
+                if (type == EntityType::SPIKE) {
+                    temp->hitSpike();
                 }
             }
         }

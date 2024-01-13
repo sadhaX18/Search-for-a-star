@@ -46,4 +46,6 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 	renderable->SetRotation(transform.q.GetAngle());
 
 	input = std::make_shared<InputComponent>();
+
+	hit = false;
 }

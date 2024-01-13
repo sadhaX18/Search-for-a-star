@@ -154,7 +154,7 @@ void Scene::SetupScene(std::shared_ptr<Resources> resources) {
 	player->getPhysicsComponent()->SetUserData(player);
 
 	changeScene = false;
-	resetLVL = true;
+	resetLVL = false;
 }
 
 void Scene::UpdateScene(IInput* Input) {
