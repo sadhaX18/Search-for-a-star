@@ -56,7 +56,7 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 	rightShape.SetAsBox(0.05f, 0.05f, b2Vec2(0.20f, 0.0f), 0);
 	fixtureDef.shape = &rightShape;
 	b2Fixture* rightSensorFixture = physics->CreateFixture(&fixtureDef);
-	leftSensorFixture->SetUserData((void*)3);
+	rightSensorFixture->SetUserData((void*)3);
 
 	// Syncing physics and graphics locations
 	b2Transform transform = physics->GetTransform();

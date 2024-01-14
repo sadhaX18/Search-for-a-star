@@ -23,9 +23,13 @@ public:
 	~WorldMap();
 	std::list<StaticEntity*> initMap(int map[16][28], IGraphics* Graphics, std::shared_ptr<b2World> gameWorld, std::shared_ptr<Resources> resources);
 
+	float getPlayerX() { return playerX; }
+	float getPlayerY() { return playerY; }
 	void clearMap(IGraphics* Graphics, std::shared_ptr<b2World> gameWorld);
 
 private:
 	TileSet getTileSetType(int map[16][28], int i, int j);
 	Tile worldMap[16][28];
+
+	float playerX = 0, playerY = 0;
 };

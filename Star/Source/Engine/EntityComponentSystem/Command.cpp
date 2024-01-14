@@ -24,11 +24,11 @@ void JumpCommand::execute(Scene* scene) {
 		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(0.0f, 20.0f));
 	}
 	else if (scene->getPlayer()->getLeftContact() > 0) {
-		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(-10.0f, 20.0f));
+		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(10.0f, 20.0f));
 		//scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(200.0f, 100.0f), true);
 	}
 	else if (scene->getPlayer()->getRightContact() > 0) {
-		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(10.0f, 20.0f));
+		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(-10.0f, 20.0f));
 		//scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(-2000.0f, 100.0f), true);
 	}
 }

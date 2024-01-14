@@ -53,6 +53,10 @@ std::list<StaticEntity*> WorldMap::initMap(int map[16][28], IGraphics* Graphics,
 				door->initEntity(EntityType::DOOR, 10, resources, Graphics, gameWorld, x, y);
 				entities.push_back(door);
 			}
+			else if (map[i][j] == 5) {
+				playerX = x;
+				playerY = y;
+			}
 		}
 	}
 	return entities;
