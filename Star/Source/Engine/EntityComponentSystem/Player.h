@@ -24,9 +24,11 @@ public:
 
 	void increaseLeftContact() { leftContact++; }
 	void decreaseLeftContact() { leftContact--; }
+	int getLeftContact() { return leftContact; }
 
 	void increaseRightContact() { rightContact++; }
 	void decreaseRightContact() { rightContact--; }
+	int getRightContact() { return rightContact; }
 
 private:
 	bool hit = false;

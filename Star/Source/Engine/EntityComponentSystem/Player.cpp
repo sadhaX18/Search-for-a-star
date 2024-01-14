@@ -34,13 +34,29 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 
 	physics->CreateFixture(&fixtureDef);
 
+	// Sensors
+	fixtureDef.isSensor = true;
+
 	// Foot sensor
 	b2PolygonShape footShape;
 	footShape.SetAsBox(0.05f, 0.05f, b2Vec2(0, -0.20f), 0);
-	fixtureDef.isSensor = true;
+	fixtureDef.shape = &footShape;
 	b2Fixture* footSensorFixture = physics->CreateFixture(&fixtureDef);
 	footSensorFixture->SetUserData((void*)5);
 
+	// Left sensor
+	b2PolygonShape leftShape;
+	leftShape.SetAsBox(0.05f, 0.05f, b2Vec2(-0.20f, 0.0f), 0);
+	fixtureDef.shape = &leftShape;
+	b2Fixture* leftSensorFixture = physics->CreateFixture(&fixtureDef);
+	leftSensorFixture->SetUserData((void*)4);
+
+	// Right sensor
+	b2PolygonShape rightShape;
+	rightShape.SetAsBox(0.05f, 0.05f, b2Vec2(0.20f, 0.0f), 0);
+	fixtureDef.shape = &rightShape;
+	b2Fixture* rightSensorFixture = physics->CreateFixture(&fixtureDef);
+	leftSensorFixture->SetUserData((void*)3);
 
 	// Syncing physics and graphics locations
 	b2Transform transform = physics->GetTransform();

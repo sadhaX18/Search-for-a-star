@@ -19,8 +19,17 @@ void MoveLeftCommand::execute(Scene* scene) {
 	scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(-1.0f,0.0f));
 }
 void JumpCommand::execute(Scene* scene) {
+	b2Vec2 initVelocity = scene->getPlayer()->getPhysicsComponent()->GetLinearVelocity();
 	if (scene->getPlayer()->getFloorContact() > 0) {
-		scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(0.0f, 200.0f), true);
+		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(0.0f, 20.0f));
+	}
+	else if (scene->getPlayer()->getLeftContact() > 0) {
+		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(-10.0f, 20.0f));
+		//scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(200.0f, 100.0f), true);
+	}
+	else if (scene->getPlayer()->getRightContact() > 0) {
+		scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(10.0f, 20.0f));
+		//scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(-2000.0f, 100.0f), true);
 	}
 }
 void FallCommand::execute(Scene* scene) {
