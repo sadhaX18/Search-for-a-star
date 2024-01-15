@@ -30,8 +30,13 @@ public:
 	void decreaseRightContact() { rightContact--; }
 	int getRightContact() { return rightContact; }
 
+	void faceRight() { facing = true; }
+	void faceLeft() { facing = false; }
+
 private:
 	bool hit = false;
+
+	bool facing = true; // true => right ; false => left
 
 	int floorContact = 0, leftContact = 0, rightContact = 0;
 

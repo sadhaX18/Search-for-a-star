@@ -6,17 +6,21 @@
 
 void MoveRightCommand::execute(Scene* scene) {
 	//scene->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(10.0f, 0.0f), true);
+	Player* temp = scene->getPlayer();
+	temp->faceRight();
 
-	b2Vec2 initVelocity = scene->getPlayer()->getPhysicsComponent()->GetLinearVelocity();
+	b2Vec2 initVelocity = temp->getPhysicsComponent()->GetLinearVelocity();
 
-	scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(1.0f, 0.0f));
+	temp->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(1.0f, 0.0f));
 }
 void MoveLeftCommand::execute(Scene* scene) {
 	//game->getPlayer()->getPhysicsComponent()->ApplyForceToCenter(b2Vec2(-10.0f, 0.0f), true);
+	Player* temp = scene->getPlayer();
+	temp->faceLeft();
 
-	b2Vec2 initVelocity = scene->getPlayer()->getPhysicsComponent()->GetLinearVelocity();
+	b2Vec2 initVelocity = temp->getPhysicsComponent()->GetLinearVelocity();
 
-	scene->getPlayer()->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(-1.0f,0.0f));
+	temp->getPhysicsComponent()->SetLinearVelocity(initVelocity + b2Vec2(-1.0f,0.0f));
 }
 void JumpCommand::execute(Scene* scene) {
 	b2Vec2 initVelocity = scene->getPlayer()->getPhysicsComponent()->GetLinearVelocity();
