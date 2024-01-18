@@ -36,6 +36,8 @@ public:
 
 private:
 
+	bool paused = false;
+
 	GameState State;
 
 	std::shared_ptr<Resources> resources;

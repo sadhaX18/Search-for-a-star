@@ -24,10 +24,12 @@ public:
 	virtual std::shared_ptr<IRenderable> CreateBillboard(IShader* ShaderIn) = 0;
 
 	void deleteRenderable(std::shared_ptr<IRenderable> renderable);
+	void deleteUIRenderable(std::shared_ptr<IRenderable> renderable);
 
 protected:
 
 	std::map<IShader*, std::list<std::shared_ptr<IRenderable>>> Renderables;
+	std::map<IShader*, std::list<std::shared_ptr<IRenderable>>> UIRenderables;
 	std::list<ITexture*> Textures;
 
 };

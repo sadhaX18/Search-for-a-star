@@ -34,4 +34,8 @@ void IGraphics::deleteRenderable(std::shared_ptr<IRenderable> renderable) {
     for (auto bucket = Renderables.begin(); bucket != Renderables.end(); ++bucket) {
         bucket->second.remove(renderable);
     }
+}void IGraphics::deleteUIRenderable(std::shared_ptr<IRenderable> renderable) {
+    for (auto bucket = UIRenderables.begin(); bucket != UIRenderables.end(); ++bucket) {
+        bucket->second.remove(renderable);
+    }
 }
