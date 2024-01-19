@@ -67,4 +67,5 @@ void Player::initEntity(EntityType type, int id, std::shared_ptr<Resources> reso
 	input = std::make_shared<InputComponent>();
 
 	hit = false;
+	goal = false;
 }

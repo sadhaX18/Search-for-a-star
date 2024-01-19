@@ -4,6 +4,7 @@
 
 Resources::Resources() : playerSprite(nullptr), spikeSprite(nullptr), doorSprite(nullptr) {
 	tileMap = std::make_shared<std::map<TileSet, IShader*>>();
+	UIElements = std::make_shared<std::map<UIElement, IShader*>>();
 }
 Resources::~Resources() {} // All shaders will be deleted by IGraphics
 
@@ -22,6 +23,10 @@ void Resources::loadResources(IGraphics* graphics) {
 	ITexture* spriteTexture = graphics->CreateTexture(L"Resource/Textures/Spike.dds");
 	ITexture* doorTexture = graphics->CreateTexture(L"Resource/Textures/Door.dds");
 
+	// UI
+	ITexture* menuTexture = graphics->CreateTexture(L"Resource/Textures/UIElements/MainMenu.dds");
+	ITexture* lvlFailTexture = graphics->CreateTexture(L"Resource/Textures/UIElements/LevelFailed.dds");
+
 	IShader* TopTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", TopTileTexture);
 	IShader* BottomTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomTileTexture);
 	IShader* LeftTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", LeftTileTexture);
@@ -31,6 +36,11 @@ void Resources::loadResources(IGraphics* graphics) {
 	IShader* TopRightTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", TopRightTileTexture);
 	IShader* BottomLeftTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomLeftTileTexture);
 	IShader* BottomRightTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomRightTileTexture);
+
+	// UI
+	IShader* menuShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", menuTexture);
+	IShader* lvlFailShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", lvlFailTexture);
+
 
 	playerSprite = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", playerTexture);
 	spikeSprite = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", spriteTexture);
@@ -45,4 +55,9 @@ void Resources::loadResources(IGraphics* graphics) {
 	tileMap->insert({ TileSet::TOP_RIGHT, TopRightTileShader });
 	tileMap->insert({ TileSet::BOTTOM_LEFT, BottomLeftTileShader });
 	tileMap->insert({ TileSet::BOTTOM_RIGHT, BottomRightTileShader });
+
+	// UI
+	UIElements->insert({ UIElement::MAIN_MENU, menuShader });
+	UIElements->insert({ UIElement::LEVEL_FAILED, lvlFailShader });
+
 }

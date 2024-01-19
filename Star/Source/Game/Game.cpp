@@ -61,15 +61,57 @@ void Game::Update()
 		// SetupScene
 		currentScene->SetupScene(resources);
 
+		if (currentScene->getSceneType() == SceneType::MENU) {
+			lives = 3;
+			UIRenderables.push_back(Graphics->CreateBillboard(resources->getUIElements()->at(UIElement::MAIN_MENU),true));
+		}
+
 		State = GameState::Playing;
 	}
 
 	// If mode is Playing then read controller input and manage which ring is selected, the rotation of each ring and waiting for select to confirm positions 
 	if (State == GameState::Playing)
 	{
+		// UI
+		if (currentScene->getSceneType() == MENU) {
+			if (Input->IsPressed(DefaultSelect)) {
+				currentScene->ChangeScene();
+				clearUI();
+			}
+		}
+
 		currentScene->UpdateScene(Input);
-		if (currentScene->SceneChange() || currentScene->getResetLVL()) {
+
+		// Checking for scene changes
+		if (currentScene->getPlayerHit()) {
+			if (lives > 0) {
+				lives--;
+				State = GameState::ResetLVL;
+				// Initialize UI elements
+				UIRenderables.push_back(Graphics->CreateBillboard(resources->getUIElements()->at(UIElement::LEVEL_FAILED), true));
+			}
+			else {
+				State = GameState::Defeated;
+				// Initialize UI elements
+
+			}
+		}
+		if (currentScene->SceneChange()) {
 			State = GameState::SceneChange;
+		}
+	}
+
+	if (State == GameState::ResetLVL) {
+		if (Input->IsPressed(DefaultSelect)) {
+			clearUI();
+			State = GameState::SceneChange;
+		}
+	}
+	// To be implemented
+	if (State == GameState::Defeated) {
+		if (Input->IsPressed(DefaultSelect)) {
+			State = GameState::SceneChange;
+			currentScene->SwitchScene(MENU);
 		}
 	}
 
@@ -80,18 +122,28 @@ void Game::Update()
 		currentScene->ClearScene();
 
 		// Load next scene
-		if(!currentScene->getResetLVL())
-			currentScene->SwitchScene();
+		if(currentScene->SceneChange())
+			currentScene->NextScene();
+
 		State = GameState::Setup;
 	}
 
 	if (State == GameState::Paused) {
-		if (Input->IsPressed(DefaultSelect))
+		if (Input->IsPressed(DefaultSelect)) {
 			State = GameState::Playing;
+			clearUI();
+		}
 	}
 }
 
 void Game::Cleanup()
 {
 
+}
+
+void Game::clearUI() {
+	while (!UIRenderables.empty()) {
+		Graphics->deleteUIRenderable(UIRenderables.front());
+		UIRenderables.pop_front();
+	}
 }

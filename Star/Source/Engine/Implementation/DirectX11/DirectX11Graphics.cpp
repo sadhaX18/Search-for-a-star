@@ -160,6 +160,18 @@ void DirectX11Graphics::Update()
             }
         }
 
+        for (auto bucket = UIRenderables.begin(); bucket != UIRenderables.end(); ++bucket)
+        {
+            bucket->first->Update();
+
+            for (auto renderable = bucket->second.begin(); renderable != bucket->second.end(); ++renderable)
+            {
+                SetWorldMatrix((*renderable)->GetTransform());
+                Context->OMSetBlendState(BlendState, NULL, ~0U);
+                (*renderable)->Update();
+            }
+        }
+
         SwapChain->Present(0, 0);
     }
 }
@@ -213,7 +225,7 @@ ITexture* DirectX11Graphics::CreateTexture(const wchar_t* filepath)
     return Result;
 }
 
-IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn)
+IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn, bool ui)
 {
     IShader* Result = nullptr;
     ID3D11VertexShader* VertexShader = nullptr;
@@ -261,14 +273,19 @@ IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vs
         if (SUCCEEDED(hr))
         {
             Result = new DirectX11Shader(Context, VertexShader, PixelShader, InputLayout, TextureIn);
-            Renderables.insert(std::pair<IShader*, std::list<std::shared_ptr<IRenderable>> >(Result, std::list<std::shared_ptr<IRenderable>>()));
+            if (!ui) {
+                Renderables.insert(std::pair<IShader*, std::list<std::shared_ptr<IRenderable>> >(Result, std::list<std::shared_ptr<IRenderable>>()));
+            }
+            else {
+                UIRenderables.insert(std::pair<IShader*, std::list<std::shared_ptr<IRenderable>> >(Result, std::list<std::shared_ptr<IRenderable>>()));
+            }
         }
     }
 
     return Result;
 }
 
-std::shared_ptr<IRenderable> DirectX11Graphics::CreateBillboard(IShader* ShaderIn)
+std::shared_ptr<IRenderable> DirectX11Graphics::CreateBillboard(IShader* ShaderIn, bool ui)
 {
     std::shared_ptr<DirectX11Billboard> Result;
 
@@ -307,7 +324,12 @@ std::shared_ptr<IRenderable> DirectX11Graphics::CreateBillboard(IShader* ShaderI
         if (SUCCEEDED(Device->CreateBuffer(&vertexDescription, &resourceData, &VertexBuffer)))
         {
             Result = std::make_shared<DirectX11Billboard>(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount);
-            Renderables[ShaderIn].push_back(Result);
+            if (!ui) {
+                Renderables[ShaderIn].push_back(Result);
+            }
+            else {
+                UIRenderables[ShaderIn].push_back(Result);
+            }
         }
     }
 

@@ -28,11 +28,14 @@ public:
 	void ClearScene();
 
 	Player* getPlayer() { return player; }
+	void ChangeScene() { changeScene = true; }
 	bool SceneChange() { return changeScene; }
+	SceneType getSceneType() { return scene; }
 
-	bool getResetLVL() { return resetLVL; }
+	bool getPlayerHit() { return playerHit; }
 
-	void SwitchScene();
+	void NextScene();
+	void SwitchScene(SceneType type) { scene = type; }
 
 	void UpdateMapdef(int temp[16][28]);
 
@@ -66,5 +69,5 @@ private:
 	std::shared_ptr<b2World> gameWorld;
 
 	bool changeScene = false;
-	bool resetLVL = false;
+	bool playerHit = false;
 };

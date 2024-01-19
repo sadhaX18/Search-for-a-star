@@ -17,7 +17,10 @@ public:
 	std::shared_ptr<InputComponent> getInputComponent() { return input; }
 
 	bool isHit() { return hit; }
+	bool isGoal() { return goal; }
 	void hitSpike() { hit = true; }
+	void reachDoor() { goal = true; }
+
 	void increaseFloorContact() { floorContact++; }
 	void decreaseFloorContact() { floorContact--; }
 	int getFloorContact() { return floorContact; }
@@ -35,6 +38,7 @@ public:
 
 private:
 	bool hit = false;
+	bool goal = false;
 
 	bool facing = true; // true => right ; false => left
 

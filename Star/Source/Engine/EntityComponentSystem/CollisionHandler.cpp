@@ -17,11 +17,11 @@ void CollisionHandler::BeginContact(b2Contact* contact) {
             Player* temp = static_cast<Player*>(bodyAData.pointer);
             if (bodyBData.pointer != nullptr) {
                 EntityType type = static_cast<Entity*>(bodyBData.pointer)->getEntityType();
-                if ( type == EntityType::DOOR) {
-                    static_cast<Entity*>(bodyBData.pointer)->deleteEntity();
-                }
-                else if (type == EntityType::SPIKE) {
+                if (type == EntityType::SPIKE) {
                     temp->hitSpike();
+                }
+                if (type == EntityType::DOOR) {
+                    temp->reachDoor();
                 }
             }
         }
@@ -35,13 +35,11 @@ void CollisionHandler::BeginContact(b2Contact* contact) {
                 Player* temp = static_cast<Player*>(bodyBData.pointer);
                 if (bodyAData.pointer != nullptr) {
                     EntityType type = static_cast<Entity*>(bodyAData.pointer)->getEntityType();
-                    if (type == EntityType::DOOR) {
-                        static_cast<Entity*>(bodyAData.pointer)->deleteEntity();
-                        //temp->getRenderable()->SetScale(1.0f, 1.0f);
-
-                    }
-                    else if (type == EntityType::SPIKE) {
+                    if (type == EntityType::SPIKE) {
                         temp->hitSpike();
+                    }
+                    if (type == EntityType::DOOR) {
+                        temp->reachDoor();
                     }
                 }
             }
@@ -51,20 +49,24 @@ void CollisionHandler::BeginContact(b2Contact* contact) {
     // Player movement checks
     //check if fixture A was the foot sensor
     void* fixtureUserData = contact->GetFixtureA()->GetUserData().pointer;
-    if ((int)fixtureUserData == 5)
-        static_cast<Player*>(bodyAData.pointer)->increaseFloorContact();
-    else if((int)fixtureUserData == 4)
-        static_cast<Player*>(bodyAData.pointer)->increaseLeftContact();
-    else if ((int)fixtureUserData == 3)
-        static_cast<Player*>(bodyAData.pointer)->increaseRightContact();
+    if (fixtureUserData != nullptr) {
+        if ((int)fixtureUserData == 5)
+            static_cast<Player*>(bodyAData.pointer)->increaseFloorContact();
+        else if ((int)fixtureUserData == 4)
+            static_cast<Player*>(bodyAData.pointer)->increaseLeftContact();
+        else if ((int)fixtureUserData == 3)
+            static_cast<Player*>(bodyAData.pointer)->increaseRightContact();
+    }
     //check if fixture B was the foot sensor
     fixtureUserData = contact->GetFixtureB()->GetUserData().pointer;
-    if ((int)fixtureUserData == 5)
-        static_cast<Player*>(bodyBData.pointer)->increaseFloorContact();
-    else if ((int)fixtureUserData == 4)
-        static_cast<Player*>(bodyBData.pointer)->increaseLeftContact();
-    else if ((int)fixtureUserData == 3)
-        static_cast<Player*>(bodyBData.pointer)->increaseRightContact();
+    if (fixtureUserData != nullptr) {
+        if ((int)fixtureUserData == 5)
+            static_cast<Player*>(bodyBData.pointer)->increaseFloorContact();
+        else if ((int)fixtureUserData == 4)
+            static_cast<Player*>(bodyBData.pointer)->increaseLeftContact();
+        else if ((int)fixtureUserData == 3)
+            static_cast<Player*>(bodyBData.pointer)->increaseRightContact();
+    }
 
 }
 void CollisionHandler::EndContact(b2Contact* contact) {
@@ -81,6 +83,9 @@ void CollisionHandler::EndContact(b2Contact* contact) {
                 if (type == EntityType::SPIKE) {
                     temp->hitSpike();
                 }
+                if (type == EntityType::DOOR) {
+                    temp->reachDoor();
+                }
             }
         }
     }
@@ -95,6 +100,9 @@ void CollisionHandler::EndContact(b2Contact* contact) {
                 if (type == EntityType::SPIKE) {
                     temp->hitSpike();
                 }
+                if (type == EntityType::DOOR) {
+                    temp->reachDoor();
+                }
             }
         }
     }
@@ -102,19 +110,23 @@ void CollisionHandler::EndContact(b2Contact* contact) {
     // Player movement checks
     //check if fixture A was the foot sensor
     void* fixtureUserData = contact->GetFixtureA()->GetUserData().pointer;
-    if ((int)fixtureUserData == 5)
-        static_cast<Player*>(bodyAData.pointer)->decreaseFloorContact();
-    else if((int)fixtureUserData == 4)
-        static_cast<Player*>(bodyAData.pointer)->decreaseLeftContact();
-    else if ((int)fixtureUserData == 3)
-        static_cast<Player*>(bodyAData.pointer)->decreaseRightContact();
+    if (fixtureUserData != nullptr) {
+        if ((int)fixtureUserData == 5)
+            static_cast<Player*>(bodyAData.pointer)->decreaseFloorContact();
+        else if ((int)fixtureUserData == 4)
+            static_cast<Player*>(bodyAData.pointer)->decreaseLeftContact();
+        else if ((int)fixtureUserData == 3)
+            static_cast<Player*>(bodyAData.pointer)->decreaseRightContact();
+    }
     //check if fixture B was the foot sensor
     fixtureUserData = contact->GetFixtureB()->GetUserData().pointer;
-    if ((int)fixtureUserData == 5)
-        static_cast<Player*>(bodyBData.pointer)->decreaseFloorContact();
-    else if ((int)fixtureUserData == 4)
-        static_cast<Player*>(bodyBData.pointer)->decreaseLeftContact();
-    else if ((int)fixtureUserData == 3)
-        static_cast<Player*>(bodyBData.pointer)->decreaseRightContact();
+    if (fixtureUserData != nullptr) {
+        if ((int)fixtureUserData == 5)
+            static_cast<Player*>(bodyBData.pointer)->decreaseFloorContact();
+        else if ((int)fixtureUserData == 4)
+            static_cast<Player*>(bodyBData.pointer)->decreaseLeftContact();
+        else if ((int)fixtureUserData == 3)
+            static_cast<Player*>(bodyBData.pointer)->decreaseRightContact();
+    }
 
 }

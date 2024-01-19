@@ -18,6 +18,14 @@ enum class TileSet {
 	BOTTOM_RIGHT = 8
 };
 
+enum class UIElement {
+	MAIN_MENU = 0,
+	PAUSED = 1,
+	GAME_OVER = 2,
+	GAME_WIN = 3,
+	LEVEL_FAILED = 4
+};
+
 class Resources {
 public:
 	Resources();
@@ -25,12 +33,14 @@ public:
 
 	void loadResources(IGraphics* graphics);
 	std::shared_ptr<std::map<TileSet, IShader*>> getTileMap() { return tileMap; }
+	std::shared_ptr<std::map<UIElement, IShader*>> getUIElements() { return UIElements; }
 
 	IShader* getPlayerSprite() { return playerSprite; }
 	IShader* getSpikeSprite() { return spikeSprite; }
 	IShader* getDoorSprite() { return doorSprite; }
 
 private:
+	std::shared_ptr<std::map<UIElement, IShader*>> UIElements;
 	std::shared_ptr<std::map<TileSet, IShader*>> tileMap;
 	IShader* playerSprite;
 	IShader* spikeSprite;

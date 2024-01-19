@@ -26,7 +26,6 @@ private:
 	std::shared_ptr<Command> moveLeftCommand;
 	std::shared_ptr<Command> jumpCommand;
 	std::shared_ptr<Command> fallCommand;
-	std::shared_ptr<Command> pauseCommand;
 
 	std::map<Action, InputAction> boundCommands;
 

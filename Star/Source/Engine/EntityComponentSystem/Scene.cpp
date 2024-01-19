@@ -73,7 +73,7 @@ void Scene::SetupScene(std::shared_ptr<Resources> resources) {
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 		};
 		UpdateMapdef(temp);
@@ -154,7 +154,7 @@ void Scene::SetupScene(std::shared_ptr<Resources> resources) {
 	player->getPhysicsComponent()->SetUserData(player);
 
 	changeScene = false;
-	resetLVL = false;
+	playerHit = false;
 }
 
 void Scene::UpdateScene(IInput* Input) {
@@ -172,11 +172,14 @@ void Scene::UpdateScene(IInput* Input) {
 
 	// Game logics (ex colliding with enemy, interacting with end goal door or collecting coins)
 	if (player->isHit()) {
-		resetLVL = true;
+		playerHit = true;
+	}
+	else if (player->isGoal()) {
+		changeScene = true;
 	}
 
 	// Deleting entities
-	auto it = entities->begin();
+	/*auto it = entities->begin();
 	while (it != entities->end()) {
 		if ((*it)->isDelete()) {
 			auto type = (*it)->getEntityType();
@@ -197,7 +200,7 @@ void Scene::UpdateScene(IInput* Input) {
 		else {
 			it++;
 		}
-	}
+	}*/
 
 	// Syncing renderable and physics locations (Graphics update)
 	player->syncGraphics();
@@ -211,7 +214,7 @@ void Scene::UpdateMapdef(int temp[16][28]) {
 	}
 }
 
-void Scene::SwitchScene() {
+void Scene::NextScene() {
 	switch (scene) {
 	case SceneType::MENU:
 		scene = SceneType::LVL1;

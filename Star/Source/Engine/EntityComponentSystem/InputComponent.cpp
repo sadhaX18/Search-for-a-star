@@ -12,7 +12,6 @@ InputComponent::InputComponent() :
 	boundCommands.insert(std::make_pair< Action, InputAction>(MOVE_LEFT, DirectionPadLeft));
 	boundCommands.insert(std::make_pair< Action, InputAction>(JUMP, DirectionPadTop));
 	boundCommands.insert(std::make_pair< Action, InputAction>(FALL, DirectionPadBottom));
-	boundCommands.insert(std::make_pair< Action, InputAction>(PAUSE, DefaultSelect));
 }
 std::vector<std::shared_ptr<Command>>& InputComponent::handleInput(IInput* input) {
 	simultaneousCommands.clear();
@@ -28,9 +27,6 @@ std::vector<std::shared_ptr<Command>>& InputComponent::handleInput(IInput* input
 	}
 	if (input->IsPressed(boundCommands.at(FALL))) {
 		simultaneousCommands.push_back(fallCommand);
-	}
-	if (input->IsPressed(boundCommands.at(PAUSE))) {
-		simultaneousCommands.push_back(pauseCommand);
 	}
 	return simultaneousCommands;
 }

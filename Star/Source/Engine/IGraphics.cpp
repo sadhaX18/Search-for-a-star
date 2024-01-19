@@ -21,6 +21,7 @@ IGraphics::~IGraphics()
     //}
 
     Renderables.clear();
+    UIRenderables.clear();
 
     for (auto texture = Textures.begin(); texture != Textures.end(); ++texture)
     {

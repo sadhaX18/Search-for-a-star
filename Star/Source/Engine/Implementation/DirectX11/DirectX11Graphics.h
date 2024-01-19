@@ -26,8 +26,8 @@ public:
 	virtual bool IsValid();
 
 	virtual ITexture* CreateTexture(const wchar_t* filepath);
-	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn);
-	virtual std::shared_ptr<IRenderable> CreateBillboard(IShader* ShaderIn);
+	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn, bool ui = false);
+	virtual std::shared_ptr<IRenderable> CreateBillboard(IShader* ShaderIn, bool ui = false);
 
 	ID3D11Device* GetDevice() const { return Device; }
 	ID3D11DeviceContext* GetContext() const { return Context; }

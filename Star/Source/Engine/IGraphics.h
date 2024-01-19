@@ -20,8 +20,8 @@ public:
 	virtual bool IsValid() = 0;
 
 	virtual ITexture* CreateTexture(const wchar_t* filepath) = 0;
-	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn) = 0;
-	virtual std::shared_ptr<IRenderable> CreateBillboard(IShader* ShaderIn) = 0;
+	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn, bool ui = false) = 0;
+	virtual std::shared_ptr<IRenderable> CreateBillboard(IShader* ShaderIn, bool ui = false) = 0;
 
 	void deleteRenderable(std::shared_ptr<IRenderable> renderable);
 	void deleteUIRenderable(std::shared_ptr<IRenderable> renderable);
