@@ -56,10 +56,6 @@ bool Game::Load()
 void Game::Update()
 {
 	// Anything needed to be done to initialize scene
-	switch (State) {
-	case Setup:
-
-	}
 	if (State == GameState::Setup)
 	{
 		// SetupScene

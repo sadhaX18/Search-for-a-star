@@ -11,7 +11,7 @@ InputComponent::InputComponent() :
 	boundCommands.insert(std::make_pair< Action, InputAction>(MOVE_RIGHT, DirectionPadRight));
 	boundCommands.insert(std::make_pair< Action, InputAction>(MOVE_LEFT, DirectionPadLeft));
 	boundCommands.insert(std::make_pair< Action, InputAction>(JUMP, DirectionPadTop));
-	boundCommands.insert(std::make_pair< Action, InputAction>(FALL, DirectionPadBottom));
+	boundCommands.insert(std::make_pair< Action, InputAction>(FALL, ButtonBottom));
 }
 std::vector<std::shared_ptr<Command>>& InputComponent::handleInput(IInput* input) {
 	simultaneousCommands.clear();
