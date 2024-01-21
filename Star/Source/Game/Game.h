@@ -17,7 +17,7 @@ class WorldMap;
 class b2World;
 class Resources;
 
-enum GameState { Setup, Playing, SceneChange, NumModes, Paused, Defeated, ResetLVL };
+enum GameState { Setup, Playing, SceneChange, NumModes, Paused, Defeated, ResetLVL, GameWin };
 
 class Game : public IApplication
 {

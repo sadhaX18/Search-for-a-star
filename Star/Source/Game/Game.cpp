@@ -58,38 +58,28 @@ void Game::Update()
 	// Anything needed to be done to initialize scene
 	switch (State) {
 	case Setup:
-
-	}
-	if (State == GameState::Setup)
-	{
 		// SetupScene
 		currentScene->SetupScene(resources);
-
 		if (currentScene->getSceneType() == SceneType::MENU) {
 			lives = 3;
-			UIRenderables.push_back(Graphics->CreateBillboard(resources->getUIElements()->at(UIElement::MAIN_MENU),true));
+			UIRenderables.push_back(Graphics->CreateBillboard(resources->getUIElements()->at(UIElement::MAIN_MENU), true));
 		}
-
 		State = GameState::Playing;
-	}
-
-	// If mode is Playing then read controller input and manage which ring is selected, the rotation of each ring and waiting for select to confirm positions 
-	if (State == GameState::Playing)
-	{
+		break;
+	case Playing:
 		// UI
 		if (currentScene->getSceneType() == MENU) {
-			if (Input->IsPressed(DefaultSelect)) {
+			if (Input->IsPressed(ButtonLeft)) {
 				currentScene->ChangeScene();
 				clearUI();
 			}
 		}
-		else {
+		else { // Pause
 			if (Input->IsPressed(ButtonLeft)) {
 				State = GameState::Paused;
 				UIRenderables.push_back(Graphics->CreateBillboard(resources->getUIElements()->at(UIElement::PAUSED), true));
 			}
 		}
-		// Pause
 
 		currentScene->UpdateScene(Input);
 
@@ -105,47 +95,49 @@ void Game::Update()
 				State = GameState::Defeated;
 				// Initialize UI elements
 				UIRenderables.push_back(Graphics->CreateBillboard(resources->getUIElements()->at(UIElement::GAME_OVER), true));
-
 			}
 		}
 		if (currentScene->SceneChange()) {
-			State = GameState::SceneChange;
+			if (currentScene->getSceneType() == LVL3) {
+				State = GameWin;
+				UIRenderables.push_back(Graphics->CreateBillboard(resources->getUIElements()->at(UIElement::GAME_WIN), true));
+			}
+			else
+				State = GameState::SceneChange;
 		}
-	}
-
-	if (State == GameState::ResetLVL) {
-		if (Input->IsPressed(DefaultSelect)) {
-			clearUI();
-			State = GameState::SceneChange;
-		}
-	}
-	// To be implemented
-	if (State == GameState::Defeated) {
+		break;
+	case ResetLVL:
 		if (Input->IsPressed(ButtonLeft)) {
-			State = GameState::SceneChange;
 			clearUI();
+			State = GameState::SceneChange;
+		}
+		break;
+	case Defeated:
+	case GameWin:
+		if (Input->IsPressed(ButtonLeft)) {
+			State = GameState::Setup;
+			clearUI();
+			currentScene->ClearScene();
 			currentScene->SwitchScene(MENU);
 		}
-	}
-
-	// Anything to be done for switching scenes { deleting current scene}
-	if (State == GameState::SceneChange)
-	{
+		break;
+	case SceneChange:
 		// Delete scene
 		currentScene->ClearScene();
 
-		// Load next scene
-		if(currentScene->SceneChange())
-			currentScene->NextScene();
-
 		State = GameState::Setup;
-	}
-
-	if (State == GameState::Paused) {
+		// Load next scene
+		if (currentScene->SceneChange()) {
+			currentScene->NextScene();
+		}
+		break;
+	case Paused:
 		if (Input->IsPressed(ButtonLeft)) {
 			State = GameState::Playing;
 			clearUI();
 		}
+		break;
+
 	}
 }
 

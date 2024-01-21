@@ -13,7 +13,7 @@
 #include "time.h"
 
 const char WindowClassName[] = "Star";
-const char WindowTitle[] = "Search for a Star 2024";
+const char WindowTitle[] = "Just another 2D platformer";
 const int WindowWidth = 1920;
 const int WindowHeight = 1080;
 

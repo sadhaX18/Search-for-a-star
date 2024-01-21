@@ -66,13 +66,13 @@ TileSet WorldMap::getTileSetType(int map[16][28], int i, int j) {
 	// 1-> tile 0-> empty
 	bool left = false, right = false, top = false, bottom = false; // true => empty
 	
-	if (i != 0 && map[i - 1][j] == 0)
+	if (i != 0 && map[i - 1][j] != 1)
 		bottom = true;
-	if (j != 0 && map[i][j-1] == 0)
+	if (j != 0 && map[i][j-1] != 1)
 		left = true;
-	if (i != 15 && map[i + 1][j] == 0)
+	if (i != 15 && map[i + 1][j] != 1)
 		top = true;
-	if (j != 28 && map[i][j+1] == 0)
+	if (j != 28 && map[i][j+1] != 1)
 		right = true;
 
 	if (!top) {

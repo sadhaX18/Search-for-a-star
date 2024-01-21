@@ -28,6 +28,7 @@ void Resources::loadResources(IGraphics* graphics) {
 	ITexture* lvlFailTexture = graphics->CreateTexture(L"Resource/Textures/UIElements/LevelFailed.dds");
 	ITexture* gameOverTexture = graphics->CreateTexture(L"Resource/Textures/UIElements/GameOver.dds");
 	ITexture* pausedTexture = graphics->CreateTexture(L"Resource/Textures/UIElements/Paused.dds");
+	ITexture* gameWinTexture = graphics->CreateTexture(L"Resource/Textures/UIElements/GameWin.dds");
 
 	IShader* TopTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", TopTileTexture);
 	IShader* BottomTileShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BottomTileTexture);
@@ -44,6 +45,7 @@ void Resources::loadResources(IGraphics* graphics) {
 	IShader* lvlFailShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", lvlFailTexture);
 	IShader* gameOverShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", gameOverTexture);
 	IShader* pausedShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", pausedTexture);
+	IShader* gameWinShader = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", gameWinTexture);
 
 
 	playerSprite = graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", playerTexture);
@@ -65,5 +67,6 @@ void Resources::loadResources(IGraphics* graphics) {
 	UIElements->insert({ UIElement::LEVEL_FAILED, lvlFailShader });
 	UIElements->insert({ UIElement::GAME_OVER, gameOverShader });
 	UIElements->insert({ UIElement::PAUSED, pausedShader });
+	UIElements->insert({ UIElement::GAME_WIN, gameWinShader });
 
 }
